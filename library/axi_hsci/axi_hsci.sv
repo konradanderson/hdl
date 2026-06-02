@@ -1,6 +1,6 @@
 // ***************************************************************************
 // ***************************************************************************
-// Copyright 2023 (c) Analog Devices, Inc. All rights reserved.
+// Copyright (C) 2025 Analog Devices, Inc. All rights reserved.
 //
 // In this HDL repository, there are many different and unique modules, consisting
 // of various HDL (Verilog or VHDL) components. The individual modules are
@@ -26,7 +26,7 @@
 //
 //   2. An ADI specific BSD license, which can be found in the top level directory
 //      of this repository (LICENSE_ADIBSD), and also on-line at:
-//      https://github.com/analogdevicesinc/hdl/blob/master/LICENSE_ADIBSD
+//      https://github.com/analogdevicesinc/hdl/blob/main/LICENSE_ADIBSD
 //      This will allow to generate bit files and not release the source code,
 //      as long as it attaches to an ADI device.
 //
@@ -44,7 +44,7 @@ module axi_hsci #(
 ) (
   input  wire                                s_axi_aclk,
   input  wire                                s_axi_aresetn,
-  
+
   input   wire [S_AXI_ADDR_WIDTH-1:0]        s_axi_awaddr,
   input   wire [2:0]                         s_axi_awprot,
   input   wire                               s_axi_awvalid,
@@ -56,7 +56,7 @@ module axi_hsci #(
   input   wire [S_AXI_ADDR_WIDTH-1:0]        s_axi_araddr,
   input   wire [2:0]                         s_axi_arprot,
   input   wire                               s_axi_arvalid,
-  
+
   output  wire                               s_axi_wready,
   output  wire                               s_axi_arready,
   output  wire [1:0]                         s_axi_rresp,
@@ -111,7 +111,7 @@ module axi_hsci #(
     .S_AXI_ADDR_WIDTH    (S_AXI_ADDR_WIDTH)
   ) hsci_master_top (
     .axi_clk             (s_axi_aclk),
-    .axi_resetn          (s_axi_aresetn),    
+    .axi_resetn          (s_axi_aresetn),
     .axi                 (axi),
     .hsci_pclk           (hsci_pclk),
     .hsci_menc_clk       (hsci_menc_clk),

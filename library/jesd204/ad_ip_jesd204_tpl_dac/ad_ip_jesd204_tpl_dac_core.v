@@ -47,11 +47,13 @@ module ad_ip_jesd204_tpl_dac_core #(
   parameter OCTETS_PER_BEAT = 4,
   parameter DATA_PATH_WIDTH = 4,
   parameter LINK_DATA_WIDTH = NUM_LANES * OCTETS_PER_BEAT * 8,
+  parameter DUAL_DDS_DISABLE = 0,
   parameter DDS_TYPE = 1,
   parameter DDS_CORDIC_DW = 16,
   parameter DDS_CORDIC_PHASE_DW = 16,
   parameter DDS_PHASE_DW = 16,
-  parameter EXT_SYNC = 0
+  parameter EXT_SYNC = 0,
+  parameter PNGEN_ENABLE = 1
 ) (
 
   // dac interface
@@ -143,15 +145,22 @@ module ad_ip_jesd204_tpl_dac_core #(
     .dac_data (dac_data_s));
 
   // PN generator
-  ad_ip_jesd204_tpl_dac_pn #(
-    .DATA_PATH_WIDTH (DATA_PATH_WIDTH),
-    .CONVERTER_RESOLUTION (CONVERTER_RESOLUTION)
-  ) i_pn_gen (
-    .clk (clk),
-    .reset (dac_sync_int),
+  generate
+  if (PNGEN_ENABLE == 1) begin: g_pngen
+    ad_ip_jesd204_tpl_dac_pn #(
+      .DATA_PATH_WIDTH (DATA_PATH_WIDTH),
+      .CONVERTER_RESOLUTION (CONVERTER_RESOLUTION)
+    ) i_pn_gen (
+      .clk (clk),
+      .reset (dac_sync_int),
 
-    .pn7_data (pn7_data),
-    .pn15_data (pn15_data));
+      .pn7_data (pn7_data),
+      .pn15_data (pn15_data));
+  end else begin: g_no_pngen
+    assign pn7_data = 0;
+    assign pn15_data = 0;
+  end
+  endgenerate
 
   // dac valid
 
@@ -193,6 +202,7 @@ module ad_ip_jesd204_tpl_dac_core #(
       .CONVERTER_RESOLUTION (CONVERTER_RESOLUTION),
       .DATAPATH_DISABLE (DATAPATH_DISABLE),
       .BITS_PER_SAMPLE (BITS_PER_SAMPLE),
+      .DUAL_DDS_DISABLE (DUAL_DDS_DISABLE),
       .DDS_TYPE (DDS_TYPE),
       .DDS_CORDIC_DW (DDS_CORDIC_DW),
       .DDS_CORDIC_PHASE_DW (DDS_CORDIC_PHASE_DW),

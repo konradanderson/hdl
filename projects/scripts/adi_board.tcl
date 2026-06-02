@@ -1,9 +1,7 @@
 ###############################################################################
-## Copyright (C) 2014-2023 Analog Devices, Inc. All rights reserved.
+## Copyright (C) 2014-2023, 2025 Analog Devices, Inc. All rights reserved.
 ### SPDX short identifier: ADIBSD
 ###############################################################################
-
-package require math
 
 ## Global variables for interconnect interface indexing
 #
@@ -23,7 +21,7 @@ set xcvr_instance NONE
 
 set use_smartconnect 1
 
-## Add an instance of an IP to the block design.
+## Add an instance of an IP or inline_hdl to the block design.
 #
 # \param[i_ip] - name of the IP
 # \param[i_name] - name of the instance
@@ -31,9 +29,13 @@ set use_smartconnect 1
 # pairs
 #
 proc ad_ip_instance {i_ip i_name {i_params {}}} {
-
-  set cell [create_bd_cell -type ip -vlnv [get_ipdefs -all -filter "VLNV =~ *:${i_ip}:* && \
-    design_tool_contexts =~ *IPI* && UPGRADE_VERSIONS == \"\""] ${i_name}]
+  set ip_type ip
+  set ip_def [get_ipdefs -all -filter "VLNV =~ *:${i_ip}:* && \
+    design_tool_contexts =~ *IPI* && UPGRADE_VERSIONS == \"\""]
+  if {[string match "*inline_hdl*" $ip_def]} {
+    set ip_type inline_hdl
+  }
+  set cell [create_bd_cell -type ${ip_type} -vlnv ${ip_def} ${i_name}]
   if {$i_params != {}} {
     set config {}
     # Add CONFIG. prefix to all config options
@@ -119,7 +121,7 @@ proc ad_connect_int_get_const {name width} {
   set cell [get_bd_cells -quiet $cell_name]
   if {$cell eq ""} {
     # Create new constant source
-    ad_ip_instance xlconstant $cell_name
+    ad_ip_instance ilconstant $cell_name
     set cell [get_bd_cells -quiet $cell_name]
     set_property CONFIG.CONST_WIDTH $width $cell
     set_property CONFIG.CONST_VAL $value $cell
@@ -149,8 +151,8 @@ proc ad_connect_int_width {obj} {
   set left [get_property LEFT $obj]
   set right [get_property RIGHT $obj]
 
-  set high [::math::max $left $right]
-  set low [::math::min $left $right]
+  set high [expr max($left,$right)]
+  set low [expr min($left,$right)]
 
   return [expr {1 + $high - $low}]
 }
@@ -1060,6 +1062,12 @@ proc ad_hpmx_interconnect {p_sel p_address p_name {p_intf_name {}}} {
   set p_intf_clock ""
   set p_intf_reset ""
 
+  if {$p_intf_name eq ""} {
+    set p_intf_name_bu ""
+  } else {
+    set p_intf_name_bu _${p_intf_name}
+  }
+
   if {$p_hier_cell != {}} {
     set p_intf_name [lrange [split $p_hier_intf "/"] end end]
 
@@ -1161,10 +1169,10 @@ proc ad_hpmx_interconnect {p_sel p_address p_name {p_intf_name {}}} {
           set p_address [expr ($p_address + 0x20000000)]
         }
       }
-      puts "create_bd_addr_seg -range $p_seg_range -offset $p_address $sys_addr_cntrl_space $p_seg_name SEG_data_$p_name"
+      puts "create_bd_addr_seg -range $p_seg_range -offset $p_address $sys_addr_cntrl_space $p_seg_name SEG_data_${p_name}${p_intf_name_bu}"
       create_bd_addr_seg -range $p_seg_range \
         -offset $p_address $sys_addr_cntrl_space \
-        $p_seg_name "SEG_data_${p_name}"
+        $p_seg_name "SEG_data_${p_name}${p_intf_name_bu}"
     } else {
       assign_bd_address $p_seg_name
     }

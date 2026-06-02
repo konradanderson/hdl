@@ -1,5 +1,5 @@
 ###############################################################################
-## Copyright (C) 2019-2024 Analog Devices, Inc. All rights reserved.
+## Copyright (C) 2019-2026 Analog Devices, Inc. All rights reserved.
 ### SPDX short identifier: ADIBSD
 ###############################################################################
 
@@ -15,17 +15,17 @@ create_bd_intf_port -mode Master -vlnv analog.com:interface:spi_engine_rtl:1.0 a
 
 source $ad_hdl_dir/library/spi_engine/scripts/spi_engine.tcl
 
-set data_width    32
-set async_spi_clk 1
-set num_cs        1
-set num_sdi       [expr {$ALERT_SPI_N ? 1 : $NUM_OF_SDI}]
-set num_sdo       1
-set sdi_delay     1
-set echo_sclk     0
+set hier_spi_engine  spi_ad738x_adc
+set data_width       32
+set async_spi_clk    1
+set offload_en       1
+set num_cs           1
+set num_sdi          [expr {$ALERT_SPI_N ? 1 : $NUM_OF_SDI}]
+set num_sdo          1
+set sdi_delay        1
+set echo_sclk        0
 
-set hier_spi_engine spi_ad738x_adc
-
-spi_engine_create $hier_spi_engine $data_width $async_spi_clk $num_cs $num_sdi $num_sdo $sdi_delay $echo_sclk
+spi_engine_create $hier_spi_engine $data_width $async_spi_clk $offload_en $num_cs $num_sdi $num_sdo $sdi_delay $echo_sclk
 
 ad_ip_instance axi_pwm_gen spi_trigger_gen
 # 300ns pwm period
@@ -51,10 +51,17 @@ ad_ip_parameter spi_clkgen CONFIG.VCO_MUL 8
 ad_connect $sys_cpu_clk spi_clkgen/clk
 ad_connect spi_clk spi_clkgen/clk_0
 
+ad_ip_instance ilvector_logic cnv_gate
+ad_ip_parameter cnv_gate CONFIG.C_SIZE 1
+ad_ip_parameter cnv_gate CONFIG.C_OPERATION {and}
+
+ad_connect cnv_gate/Op1 axi_ad738x_dma/s_axis_xfer_req
+ad_connect cnv_gate/Op2 spi_trigger_gen/pwm_0
+
 ad_connect spi_clk spi_trigger_gen/ext_clk
 ad_connect $sys_cpu_clk spi_trigger_gen/s_axi_aclk
 ad_connect sys_cpu_resetn spi_trigger_gen/s_axi_aresetn
-ad_connect spi_trigger_gen/pwm_0 $hier_spi_engine/trigger
+ad_connect cnv_gate/Res $hier_spi_engine/trigger
 
 ad_connect axi_ad738x_dma/s_axis $hier_spi_engine/M_AXIS_SAMPLE
 ad_connect $hier_spi_engine/m_spi ad738x_spi

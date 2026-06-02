@@ -20,7 +20,7 @@ inputs of the ADC.
 Supported boards
 -------------------------------------------------------------------------------
 
-- :adi:`EVAL-AD9265 <EVAL-AD9265>`
+- :adi:`EVAL-AD9265`
 
 Supported devices
 -------------------------------------------------------------------------------
@@ -41,7 +41,7 @@ Supported carriers
      - :xilinx:`ZC706`
      - FMC LPC
    * -
-     - :xilinx:`ZedBoard <products/boards-and-kits/1-8dyf-11.html>`
+     - `ZedBoard <https://digilent.com/shop/zedboard-zynq-7000-arm-fpga-soc-development-board>`__
      - FMC LPC
 
 Block design

@@ -1,4 +1,8 @@
-# AD4110/Zed HDL Project
+<!-- no_build_example, no_dts -->
+
+# AD4110/ZED HDL Project
+
+- VIO with which it was tested in hardware: 3.3V
 
 ## Building the project
 

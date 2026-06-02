@@ -1,4 +1,4 @@
-.. _ad4052-ardz:
+.. _ad4052_ardz:
 
 AD4052-ARDZ HDL project
 ================================================================================
@@ -7,7 +7,7 @@ Overview
 --------------------------------------------------------------------------------
 
 The HDL reference design for the :adi:`AD4050`, :adi:`AD4052`, :adi:`AD4056`, and
-:adi:`AD4058` .
+:adi:`AD4058`.
 They are versatile, 16-bit/12-bit, successive approximation register (SAR)
 analog-to-digital converters (ADCs) that enable low-power, high-density data
 acquisition solutions without sacrificing precision. These ADCs offer a unique
@@ -21,9 +21,6 @@ battery-powered, compact data acquisition and edge sensing applications.
 The :adi:`EVAL-AD4050-ARDZ`/:adi:`EVAL-AD4052-ARDZ` evaluation boards enable
 quick and easy evaluation of the performance and features of the :adi:`AD4050`
 or the :adi:`AD4052`, respectively.
-The AD4050 and AD4052 are compact, low power, 12-bit or 16-bit (respectively)
-Easy Drive successive approximation register (SAR) analog-to-digital converters
-(ADCs).
 
 This project has a :ref:`spi_engine` instance to control and acquire data from
 the precision ADC.
@@ -33,21 +30,21 @@ sample rate.
 Supported boards
 -------------------------------------------------------------------------------
 
--  :adi:`EVAL-AD4050-ARDZ`
--  :adi:`EVAL-AD4052-ARDZ`
+- :adi:`EVAL-AD4050-ARDZ`
+- :adi:`EVAL-AD4052-ARDZ`
 
 Supported devices
 -------------------------------------------------------------------------------
 
--  :adi:`AD4050`
--  :adi:`AD4052`
--  :adi:`AD4056`
--  :adi:`AD4058`
+- :adi:`AD4050`
+- :adi:`AD4052`
+- :adi:`AD4056`
+- :adi:`AD4058`
 
 Supported carriers
 -------------------------------------------------------------------------------
 
-- :xilinx:`Cora Z7-07S <products/boards-and-kits/1-1qlaz7n.html>`
+- `Cora Z7S <https://digilent.com/shop/cora-z7-zynq-7000-single-core-for-arm-fpga-soc-development>`__
   Arduino shield connector
 - :intel:`DE10-Nano <content/www/us/en/developer/topic-technology/edge-5g/hardware/fpga-de10-nano.html>`
   Arduino shield connector

@@ -12,14 +12,14 @@ DAC channels that are interfaced with an FPGA through the FMC Low Pin Count
 (LPC) Connector.
 Current revision of :adi:`EVAL-CN0585-FMCZ <CN0585>` is Rev B.
 :adi:`EVAL-CN0585-FMCZ <CN0585>`, :adi:`EVAL-CN0585-FMCZ <CN0584>` and
-- :xilinx:`ZedBoard <products/boards-and-kits/1-8dyf-11.html>` are connected
+- `ZedBoard <https://digilent.com/shop/zedboard-zynq-7000-arm-fpga-soc-development-board>`__ are connected
 together to build a development system setup.
 
 Supported boards
 -------------------------------------------------------------------------------
 
-- :adi:`CN0585 <CN0585>`
-- :adi:`CN0584 <CN0584>`
+- :adi:`CN0585`
+- :adi:`CN0584`
 
 Supported devices
 -------------------------------------------------------------------------------
@@ -40,8 +40,8 @@ Supported carriers
    * - Evaluation board
      - Carrier
      - FMC slot
-   * - :adi:`CN0585 <CN0585>` + :adi:`CN0584 <CN0584>`
-     - :xilinx:`ZedBoard <products/boards-and-kits/1-8dyf-11.html>`
+   * - :adi:`CN0585` + :adi:`CN0584`
+     - `ZedBoard <https://digilent.com/shop/zedboard-zynq-7000-arm-fpga-soc-development-board>`__
      - FMC-LPC
 
 Block design

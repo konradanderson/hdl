@@ -1,8 +1,9 @@
-# ARDV904x HDL Project
+# ADRV904X HDL Project
 
 - Evaluation board product page: [EVAL-ADRV904x](https://www.analog.com/eval-adrv904x)
 - System documentation: https://wiki.analog.com/resources/eval/user-guides/adrv904x/quickstart/zynqmp
 - HDL project documentation: https://analogdevicesinc.github.io/hdl/projects/adrv904x/index.html
+- Evaluation board VADJ: 1.8V
 
 ## Supported parts
 

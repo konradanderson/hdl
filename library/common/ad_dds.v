@@ -44,6 +44,8 @@ module ad_dds #(
   // range 8-32
   parameter PHASE_DW = 16,
   // set 1 for CORDIC or 2 for Polynomial
+  parameter DUAL_DDS_DISABLE = 0,
+  // Set 1 to disable dual DDS tone and remove second DDS.
   parameter DDS_TYPE = 1,
   // range 8-24
   parameter CORDIC_DW = 16,
@@ -150,6 +152,7 @@ module ad_dds #(
         ad_dds_2 #(
           .DDS_DW (DDS_DW),
           .PHASE_DW (PHASE_DW),
+          .DUAL_DDS_DISABLE (DUAL_DDS_DISABLE),
           .DDS_TYPE (DDS_TYPE),
           .CORDIC_DW (CORDIC_DW),
           .CORDIC_PHASE_DW (CORDIC_PHASE_DW)

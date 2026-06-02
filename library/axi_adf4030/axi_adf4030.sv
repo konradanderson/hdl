@@ -1,11 +1,48 @@
+// ***************************************************************************
+// ***************************************************************************
+// Copyright (C) 2026 Analog Devices, Inc. All rights reserved.
+//
+// In this HDL repository, there are many different and unique modules, consisting
+// of various HDL (Verilog or VHDL) components. The individual modules are
+// developed independently, and may be accompanied by separate and unique license
+// terms.
+//
+// The user should read each of these license terms, and understand the
+// freedoms and responsibilities that he or she has by using this source/core.
+//
+// This core is distributed in the hope that it will be useful, but WITHOUT ANY
+// WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+// A PARTICULAR PURPOSE.
+//
+// Redistribution and use of source or resulting binaries, with or without modification
+// of this file, are permitted under one of the following two license terms:
+//
+//   1. The GNU General Public License version 2 as published by the
+//      Free Software Foundation, which can be found in the top level directory
+//      of this repository (LICENSE_GPL2), and also online at:
+//      <https://www.gnu.org/licenses/old-licenses/gpl-2.0.html>
+//
+// OR
+//
+//   2. An ADI specific BSD license, which can be found in the top level directory
+//      of this repository (LICENSE_ADIBSD), and also on-line at:
+//      https://github.com/analogdevicesinc/hdl/blob/main/LICENSE_ADIBSD
+//      This will allow to generate bit files and not release the source code,
+//      as long as it attaches to an ADI device.
+//
+// ***************************************************************************
+// ***************************************************************************
+
 `timescale 1ns / 1ps
 
 module axi_adf4030 #(
   // Peripheral ID
   parameter ID = 0,
-
+  // FPGA FAMILY
+  parameter FPGA_FAMILY = 0,
   // Number of active trigger channels
-  parameter CHANNEL_COUNT = 1
+  parameter CHANNEL_COUNT = 1,
+  parameter TRIGGER_STRETCH = 0
 ) (
 
   inout  logic bsync_p,
@@ -14,6 +51,7 @@ module axi_adf4030 #(
   input  logic trigger,
   output logic sysref,
   output logic [CHANNEL_COUNT-1:0] trig_channel,
+  output logic trig_request_out,
 
   // AXI BUS
   input  logic                     s_axi_aresetn,
@@ -39,6 +77,8 @@ module axi_adf4030 #(
   input  logic                     s_axi_rready
 );
 
+  localparam SIM_DEVICE = (FPGA_FAMILY == 7) ? "VERSAL_PREMIUM" : ((FPGA_FAMILY == 6) ? "VERSAL_AI_CORE" : "ULTRASCALE");
+
   logic        external_bsync;
   logic        internal_bsync;
   logic        trigger_sync;
@@ -55,6 +95,7 @@ module axi_adf4030 #(
   logic        debug_trig;
   logic        enable_misalign_check;
   logic        trig;
+  logic        trig_in;
 
   // Internal up bus, translated by up_axi
   logic        up_rstn;
@@ -78,8 +119,8 @@ module axi_adf4030 #(
   logic                     disable_internal_bsync;
   logic [CHANNEL_COUNT-1:0] trig_channel_s;
 
-  IOBUFDS_DCIEN #( 
-    .SIM_DEVICE      ("ULTRASCALE"),
+  IOBUFDS_DCIEN #(
+    .SIM_DEVICE      (SIM_DEVICE),
     .USE_IBUFDISABLE ("TRUE")
   ) IOBUFDS_inst (
    .O              (external_bsync),
@@ -116,13 +157,26 @@ module axi_adf4030 #(
 
   assign trig = enable_debug_trig ? 1'b0 : (select_trig ? trigger_sync : manual_trig);
 
+  generate
+    if (TRIGGER_STRETCH) begin
+      trigger_bsync_stretcher i_trigger_stretcher (
+        .external_bsync(external_bsync),
+        .trigger(trig),
+        .sync_start(trig_in));
+    end else begin
+      assign trig_in = trig;
+    end
+  endgenerate
+
+  assign trig_request_out = trig_in;
+
   genvar i;
   generate
     for (i = 0; i < CHANNEL_COUNT; i = i + 1) begin
       trigger_channel i_channel (
         .clk         (device_clk),
         .rstn        (rstn),
-        .trigger     (trig),
+        .trigger     (trig_in),
         .ch_en       (trig_channel_en[i]),
         .ch_phase    (trig_channel_phase[i]),
         .bsync_event (bsync_event),

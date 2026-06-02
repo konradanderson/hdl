@@ -3,12 +3,14 @@
 - Evaluation board product page: [EVAL-ADA4355](https://www.analog.com/eval-ada4355.html)
 - System documentation: to be added
 - HDL project documentation: https://analogdevicesinc.github.io/hdl/projects/ada4355_fmc/index.html
+- Evaluation board VADJ: 2.5V
 
 ## Supported parts
 
 | Part name                                      | Description                                                  |
 |------------------------------------------------|--------------------------------------------------------------|
 | [ADA4355](https://www.analog.com/ada4355) | 14-Bit, 125MSPS, High performance, current input, data acquisition μModule |
+| [ADA4356](https://www.analog.com/ada4356) | 14-Bit, 125MSPS, High performance, current input, data acquisition μModule |
 
 ## Building the project
 

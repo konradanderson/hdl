@@ -69,10 +69,10 @@ DMA source
 
 In cases of high sample rates where the required data rate exceeds the PS-PL
 interface's available throughput, the data is transmitted in a loop from a
-local buffer (:git-hdl:`dac_fifo <projects/dac_fmc_ebz/common/dac_fmc_ebz_bd.tcl#L57>`)
-which is loaded once with the DMA from the PS DDR.
+local buffer (:git-hdl:`data_offload <library/data_offload>`) which is loaded
+once with the DMA data from the PS DDR.
 
-For lower sample rates, the :git-hdl:`DAC FIFO <library/util_dacfifo>`
+For lower sample rates, the :git-hdl:`data_offload <library/data_offload>`
 can be placed in bypass mode, in which case the DMA must stream the data
 from the PS memory.
 
@@ -114,11 +114,6 @@ are:
 
   - **04 (default)**
   - can vary from 00 to 21 depending on the selected device (ADI_DAC_DEVICE)
-
-- **ADI_LANE_RATE**: specifies the lane rate (**supported only on the ZCU102 carrier**)
-
-  - **15.4 GHz(default)**
-  - 12.5 GHz
 
 If the desired parameters are not listed in any of the supported modes the user can
 configure them trough ``make`` parameters:
@@ -315,6 +310,7 @@ dac_jesd204_xcvr                     0x44A6_0000      0x84A6_0000
 dac_jesd204_transport                0x44A0_4000      0x84A0_4000
 dac_jesd204_link                     0x44A9_0000      0x84A9_0000
 dac_dma                              0x7C42_0000      0x9C42_0000
+dac_data_offload                     0x7C43_0000      0x9C43_0000
 ===================================  ===============  ===========
 
 =================================== ===========
@@ -377,7 +373,7 @@ GPIOs
 +=================+=================+========+=======+===============+===============+===============+
 | pmod_gpio[3:0]* | INOUT           | 51-48  | ---   | 128-125       | 51-48         | ---           |
 +-----------------+-----------------+--------+-------+---------------+---------------+---------------+
-| dac_fifo_bypass | OUTPUT          | 40     | 40    | 117           | 40            | 8             |
+| dac_fifo_bypass | OUTPUT          | ---    | 40    | ---           | ---           | 8             |
 +-----------------+-----------------+--------+-------+---------------+---------------+---------------+
 | dac_ctrl[4]     | INOUT           | 25     | ---   | 102           | 25            | ---           |
 +-----------------+-----------------+--------+-------+---------------+---------------+---------------+
@@ -462,31 +458,8 @@ command should be run:
    $cd hdl/projects/dac_fmc_ebz/zcu102
    $make ADI_DAC_DEVICE=AD9152 ADI_DAC_MODE=09
 
-Example: if the AD9152 device is needed and there is a need for a custom mode,
-the following commands should be run:
-
-.. shell:: bash
-
-   $make ADI_DAC_DEVICE=AD9152 ADI_LANE_RATE=12.5 M=1 L=8 S=4 NP=16
-
-or:
-
-.. shell:: bash
-
-   $make ADI_DAC_DEVICE=AD9152 ADI_LANE_RATE=12.5 ADI_DAC_MODE=09 M=1 S=4
-
-With either of these two options, the design will be built in the same
-configuration:
-
-**ADI_DAC_DEVICE=AD9152 LANE_RATE=12.5GHz M=1 L=8 S=4 F=1 HD=1 N=16 NP=16**
-
-The result of the build, if parameters were used, will be in a folder named
-by the configuration used:
-
-- if the following command was run ``make ADI_DAC_DEVICE=AD9152 ADI_DAC_MODE=09``
-  then the folder name will be: ``ADIDACDEVICEAD9152_ADIDACMODE09``
-- if the following command was run ``make ADI_DAC_DEVICE=AD9152 ADI_DAC_MODE=09
-  ADI_LANE_RATE=12.5`` then the folder name will be: ``ADIDACDEVICEAD9152_ADIDACMODE09_ADILANERATE12_5``
+Based on the parameters used above, the build will be in a folder named
+after the configuration called: ``ADIDACDEVICEAD9152_ADIDACMODE09``.
 
 A more comprehensive build guide can be found in the :ref:`build_hdl` user guide.
 
@@ -564,9 +537,9 @@ HDL related
    * - SYSID_ROM
      - :git-hdl:`library/sysid_rom`
      - :ref:`axi_sysid`
-   * - UTIL_DACFIFO
-     - :git-hdl:`library/util_dacfifo`
-     - ---
+   * - DATA_OFFLOAD
+     - :git-hdl:`library/data_offload`
+     - :ref:`data_offload`
    * - UTIL_UPACK2
      - :git-hdl:`library/util_pack/util_upack2`
      - :ref:`util_cpack2`
@@ -587,7 +560,7 @@ Software related
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 - :dokuwiki:`[Wiki] AD917X DAC Linux Driver wiki page <resources/tools-software/linux-drivers/iio-dds/ad9172>`
-- :dokuwiki:`[Wiki] AXI DAC HDL Linux Driver wiki page <tools-software/linux-drivers/iio-dds/axi-dac-dds-hdl>`
+- :dokuwiki:`[Wiki] AXI DAC HDL Linux Driver wiki page <resources/tools-software/linux-drivers/iio-dds/axi-dac-dds-hdl>`
 
 .. include:: ../common/more_information.rst
 

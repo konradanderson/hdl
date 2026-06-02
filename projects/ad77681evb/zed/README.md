@@ -1,4 +1,8 @@
-# AD7768-1-EVB/ZED HDL Project
+<!-- no_build_example, no_no_os -->
+
+# AD77681EVB/ZED HDL Project
+
+- VADJ with which it was tested in hardware: 2.5V
 
 ## Building the project
 

@@ -193,7 +193,7 @@ if {$ADI_PHY_SEL == 1} {
     }
   }
 } else {
-  source $ad_hdl_dir/projects/ad9081_fmca_ebz/common/versal_transceiver.tcl
+  source $ad_hdl_dir/library/xilinx/scripts/versal_xcvr_subsystem.tcl
 
   set REF_CLK_RATE [ expr { [info exists ad_project_params(REF_CLK_RATE)] \
                             ? $ad_project_params(REF_CLK_RATE) : 375 } ]
@@ -209,7 +209,7 @@ if {$ADI_PHY_SEL == 1} {
 
   switch $INTF_CFG {
     "RXTX" {
-      create_versal_phy jesd204_phy_rxtx $JESD_MODE $RX_NUM_OF_LANES $TX_NUM_OF_LANES $RX_LANE_RATE $TX_LANE_RATE $REF_CLK_RATE $TRANSCEIVER_TYPE $INTF_CFG
+      create_versal_jesd_xcvr_subsystem jesd204_phy_rxtx $JESD_MODE $RX_NUM_OF_LANES $TX_NUM_OF_LANES $RX_LANE_RATE $TX_LANE_RATE $REF_CLK_RATE $TRANSCEIVER_TYPE $INTF_CFG
       set rx_phy jesd204_phy_rxtx
       set tx_phy jesd204_phy_rxtx
       ad_connect ref_clk_q0      ${rx_phy}/GT_REFCLK
@@ -225,7 +225,7 @@ if {$ADI_PHY_SEL == 1} {
       ad_connect ${rx_phy}/tx_resetdone tx_resetdone
     }
     "RX" {
-      create_versal_phy jesd204_phy_rx $JESD_MODE $RX_NUM_OF_LANES 0 $RX_LANE_RATE $TX_LANE_RATE $REF_CLK_RATE $TRANSCEIVER_TYPE $INTF_CFG
+      create_versal_jesd_xcvr_subsystem jesd204_phy_rx $JESD_MODE $RX_NUM_OF_LANES 0 $RX_LANE_RATE $TX_LANE_RATE $REF_CLK_RATE $TRANSCEIVER_TYPE $INTF_CFG
       set rx_phy jesd204_phy_rx
       ad_connect ref_clk_q0      ${rx_phy}/GT_REFCLK
       ad_connect gt_reset        ${rx_phy}/gtreset_in
@@ -237,7 +237,7 @@ if {$ADI_PHY_SEL == 1} {
       ad_connect ${rx_phy}/rx_resetdone rx_resetdone
     }
     "TX" {
-      create_versal_phy jesd204_phy_tx $JESD_MODE 0 $TX_NUM_OF_LANES $RX_LANE_RATE $TX_LANE_RATE $REF_CLK_RATE $TRANSCEIVER_TYPE $INTF_CFG
+      create_versal_jesd_xcvr_subsystem jesd204_phy_tx $JESD_MODE 0 $TX_NUM_OF_LANES $RX_LANE_RATE $TX_LANE_RATE $REF_CLK_RATE $TRANSCEIVER_TYPE $INTF_CFG
       set tx_phy jesd204_phy_tx
       ad_connect ref_clk_q0      ${tx_phy}/GT_REFCLK
       ad_connect gt_reset        ${tx_phy}/gtreset_in
@@ -561,6 +561,20 @@ if {$INTF_CFG != "RX"} {
   ad_cpu_interrupt ps-10 mb-15 axi_mxfe_tx_jesd/irq
 }
 
+# Connect PHY Quads to CPU
+if {!$ADI_PHY_SEL} {
+  for {set i 0} {$i < $num_quads} {incr i} {
+    set addr [expr 0x44040000 + $i * 0x40000]
+    if {$INTF_CFG == "RXTX"} {
+      ad_cpu_interconnect $addr $rx_phy s_axi_${i}
+    } elseif {$INTF_CFG == "RX"} {
+      ad_cpu_interconnect $addr $rx_phy s_axi_${i}
+    } elseif {$INTF_CFG == "TX"} {
+      ad_cpu_interconnect $addr $rx_phy s_axi_${i}
+    }
+  }
+}
+
 # Dummy outputs for unused lanes
 if {$ADI_PHY_SEL == 1} {
   if {$INTF_CFG != "TX"} {
@@ -614,7 +628,7 @@ if {$INTF_CFG != "TX"} {
   ad_connect ext_sync_in rx_mxfe_tpl_core/adc_tpl_core/adc_sync_in
   if {$INTF_CFG == "RXTX"} {
     # Rx & Tx
-    ad_ip_instance util_vector_logic manual_sync_or [list \
+    ad_ip_instance ilvector_logic manual_sync_or [list \
       C_SIZE 1 \
       C_OPERATION {or} \
     ]
@@ -625,17 +639,17 @@ if {$INTF_CFG != "TX"} {
     ad_connect rx_mxfe_tpl_core/adc_tpl_core/adc_sync_manual_req_out rx_mxfe_tpl_core/adc_tpl_core/adc_sync_manual_req_in
   }
   # Reset pack cores
-  ad_ip_instance util_reduced_logic cpack_rst_logic
+  ad_ip_instance ilreduced_logic cpack_rst_logic
   ad_ip_parameter cpack_rst_logic config.c_operation {or}
   ad_ip_parameter cpack_rst_logic config.c_size {3}
 
-  ad_ip_instance util_vector_logic rx_do_rstout_logic
+  ad_ip_instance ilvector_logic rx_do_rstout_logic
   ad_ip_parameter rx_do_rstout_logic config.c_operation {not}
   ad_ip_parameter rx_do_rstout_logic config.c_size {1}
 
   ad_connect $adc_data_offload_name/s_axis_tready rx_do_rstout_logic/Op1
 
-  ad_ip_instance xlconcat cpack_reset_sources
+  ad_ip_instance ilconcat cpack_reset_sources
   ad_ip_parameter cpack_reset_sources config.num_ports {3}
   ad_connect rx_device_clk_rstgen/peripheral_reset cpack_reset_sources/in0
   ad_connect rx_mxfe_tpl_core/adc_tpl_core/adc_rst cpack_reset_sources/in1
@@ -657,11 +671,11 @@ if {$INTF_CFG != "RX"} {
     ad_connect tx_mxfe_tpl_core/dac_tpl_core/dac_sync_manual_req_out tx_mxfe_tpl_core/dac_tpl_core/dac_sync_manual_req_in
   }
   # Reset upack cores
-  ad_ip_instance util_reduced_logic upack_rst_logic
+  ad_ip_instance ilreduced_logic upack_rst_logic
   ad_ip_parameter upack_rst_logic config.c_operation {or}
   ad_ip_parameter upack_rst_logic config.c_size {2}
 
-  ad_ip_instance xlconcat upack_reset_sources
+  ad_ip_instance ilconcat upack_reset_sources
   ad_ip_parameter upack_reset_sources config.num_ports {2}
   ad_connect tx_device_clk_rstgen/peripheral_reset upack_reset_sources/in0
   ad_connect tx_mxfe_tpl_core/dac_tpl_core/dac_rst upack_reset_sources/in1

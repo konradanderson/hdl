@@ -1,6 +1,6 @@
 // ***************************************************************************
 // ***************************************************************************
-// Copyright 2023 (c) Analog Devices, Inc. All rights reserved.
+// Copyright (C) 2025 Analog Devices, Inc. All rights reserved.
 //
 // In this HDL repository, there are many different and unique modules, consisting
 // of various HDL (Verilog or VHDL) components. The individual modules are
@@ -26,7 +26,7 @@
 //
 //   2. An ADI specific BSD license, which can be found in the top level directory
 //      of this repository (LICENSE_ADIBSD), and also on-line at:
-//      https://github.com/analogdevicesinc/hdl/blob/master/LICENSE_ADIBSD
+//      https://github.com/analogdevicesinc/hdl/blob/main/LICENSE_ADIBSD
 //      This will allow to generate bit files and not release the source code,
 //      as long as it attaches to an ADI device.
 //
@@ -35,42 +35,39 @@
 
 `timescale 1ns/1ps
 
-module lfsr15_8(input clk,
-                input rstn,
-                input en,
-                output [7:0] pn_out
-                );
+module lfsr15_8 (
+  input clk,
+  input rstn,
+  input en,
+  output [7:0] pn_out
+);
 
-   wire stuck;
-   reg [14:0] lfsr;
+  wire stuck;
+  reg [14:0] lfsr;
 
-   assign stuck = &lfsr;
+  assign stuck = &lfsr;
 
-   // LFSR that produces 8  bits per cycle
-   always @ (posedge clk or negedge rstn)
-     begin        
-      if (rstn == 0) 
-        lfsr[14:0] <= 15'h7fff;
-      else 
-        begin
-        if (en)
-          begin
-	  lfsr[14:9] <= lfsr[6:1];
-          lfsr[8]    <= (stuck == 1'b1) ? 1: lfsr[0];
-          lfsr[7]    <= lfsr[14] ^ lfsr[13];
-          lfsr[6]    <= lfsr[13] ^ lfsr[12];
-          lfsr[5]    <= lfsr[12] ^ lfsr[11];
-          lfsr[4]    <= lfsr[11] ^ lfsr[10];
-          lfsr[3]    <= lfsr[10] ^ lfsr[9];
-          lfsr[2]    <= lfsr[9]  ^ lfsr[8];
-          lfsr[1]    <= lfsr[8]  ^ lfsr[7];
-          lfsr[0]    <= lfsr[7]  ^ lfsr[6];
-          end // if (en)
-        else
-          lfsr <= lfsr;  // hold sreg when en=0
-        end // else: !if(rstn == 0)
-     end // always @ (posedge clk or negedge rstn)
-   
-   assign pn_out = lfsr[7:0];
-          
+   // LFSR that produces 8 bits per cycle
+  always @ (posedge clk or negedge rstn) begin
+    if (rstn == 0)
+      lfsr[14:0] <= 15'h7fff;
+    else begin
+      if (en) begin
+	      lfsr[14:9] <= lfsr[6:1];
+        lfsr[8]    <= (stuck == 1'b1) ? 1: lfsr[0];
+        lfsr[7]    <= lfsr[14] ^ lfsr[13];
+        lfsr[6]    <= lfsr[13] ^ lfsr[12];
+        lfsr[5]    <= lfsr[12] ^ lfsr[11];
+        lfsr[4]    <= lfsr[11] ^ lfsr[10];
+        lfsr[3]    <= lfsr[10] ^ lfsr[9];
+        lfsr[2]    <= lfsr[9]  ^ lfsr[8];
+        lfsr[1]    <= lfsr[8]  ^ lfsr[7];
+        lfsr[0]    <= lfsr[7]  ^ lfsr[6];
+      end else
+        lfsr <= lfsr;
+    end
+  end
+
+  assign pn_out = lfsr[7:0];
+
 endmodule

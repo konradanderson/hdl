@@ -42,6 +42,8 @@ module ad_dds_2 #(
   // Range = 8-24
   parameter   PHASE_DW = 16,
   // Set 1 for CORDIC or 2 for Polynomial
+  parameter DUAL_DDS_DISABLE = 0,
+  // Set to 1 for single tone DDS only.
   parameter   DDS_TYPE = 1,
   // Range = 8-24
   parameter   CORDIC_DW = 16,
@@ -141,15 +143,24 @@ module ad_dds_2 #(
 
     // dds-2
 
-    ad_dds_1 #(
-      .DDS_TYPE(DDS_TYPE),
-      .DDS_D_DW(DDS_D_DW),
-      .DDS_P_DW(DDS_P_DW)
-    ) i_dds_1_1 (
-      .clk (clk),
-      .angle (dds_phase_1_s),
-      .scale (dds_scale_1_d),
-      .dds_data (dds_data_1_s));
+        //Wrap DDS-2 in check for DUAL_DDS_DISABLE
+    case (DUAL_DDS_DISABLE)
+      0: begin
+        ad_dds_1 #(
+          .DDS_TYPE(DDS_TYPE),
+          .DDS_D_DW(DDS_D_DW),
+          .DDS_P_DW(DDS_P_DW)
+        ) i_dds_1_1 (
+          .clk (clk),
+          .angle (dds_phase_1_s),
+          .scale (dds_scale_1_d),
+          .dds_data (dds_data_1_s));
+        end
+      1: begin
+        assign dds_data_1_s = {DDS_D_DW{1'b0}};
+      end
+    endcase
+
   endgenerate
 
 endmodule

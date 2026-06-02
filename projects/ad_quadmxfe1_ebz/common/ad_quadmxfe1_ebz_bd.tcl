@@ -76,10 +76,17 @@ set TX_SAMPLES_PER_CHANNEL [expr $TX_NUM_OF_LANES * 8*$TX_DATAPATH_WIDTH / ($TX_
 set adc_offload_name mxfe_rx_data_offload
 set adc_data_width [expr $RX_DMA_SAMPLE_WIDTH*$RX_NUM_OF_CONVERTERS*$RX_SAMPLES_PER_CHANNEL]
 set adc_dma_data_width $adc_data_width
+set adc_fifo_address_width [expr int(ceil(log(($adc_fifo_samples_per_converter*$RX_NUM_OF_CONVERTERS) / ($adc_data_width/$RX_DMA_SAMPLE_WIDTH))/log(2)))]
 
 set dac_offload_name mxfe_tx_data_offload
 set dac_data_width [expr $TX_SAMPLE_WIDTH*$TX_NUM_OF_CONVERTERS*$TX_SAMPLES_PER_CHANNEL]
 set dac_dma_data_width [expr $TX_DMA_SAMPLE_WIDTH*$TX_NUM_OF_CONVERTERS*$TX_SAMPLES_PER_CHANNEL]
+set dac_fifo_address_width [expr int(ceil(log(($dac_fifo_samples_per_converter*$TX_NUM_OF_CONVERTERS) / ($dac_data_width/$TX_DMA_SAMPLE_WIDTH))/log(2)))]
+
+set adc_do_mem_type [ expr { [info exists ad_project_params(ADC_DO_MEM_TYPE)] \
+                          ? $ad_project_params(ADC_DO_MEM_TYPE) : 0 } ]
+set dac_do_mem_type [ expr { [info exists ad_project_params(DAC_DO_MEM_TYPE)] \
+                          ? $ad_project_params(DAC_DO_MEM_TYPE) : 0 } ]
 
 create_bd_port -dir I rx_device_clk
 create_bd_port -dir I tx_device_clk
@@ -208,9 +215,10 @@ ad_ip_instance util_cpack2 util_mxfe_cpack [list \
   SAMPLE_DATA_WIDTH $RX_DMA_SAMPLE_WIDTH \
 ]
 
+set adc_offload_size [expr $adc_data_width / 8 * 2**$adc_fifo_address_width]
 ad_data_offload_create $adc_offload_name \
                        0 \
-                       $adc_offload_type \
+                       $adc_do_mem_type \
                        $adc_offload_size \
                        $adc_data_width \
                        $adc_data_width
@@ -218,11 +226,11 @@ ad_data_offload_create $adc_offload_name \
 ad_ip_parameter $adc_offload_name/i_data_offload CONFIG.SYNC_EXT_ADD_INTERNAL_CDC 0
 ad_connect $adc_offload_name/sync_ext GND
 
-ad_ip_instance util_vector_logic rx_do_rstout_logic
+ad_ip_instance ilvector_logic rx_do_rstout_logic
 ad_ip_parameter rx_do_rstout_logic config.c_operation {not}
 ad_ip_parameter rx_do_rstout_logic config.c_size {1}
 
-ad_ip_instance util_vector_logic cpack_reset_logic
+ad_ip_instance ilvector_logic cpack_reset_logic
 ad_ip_parameter cpack_reset_logic config.c_operation {or}
 ad_ip_parameter cpack_reset_logic config.c_size {1}
 
@@ -266,9 +274,10 @@ ad_ip_instance util_upack2 util_mxfe_upack [list \
   SAMPLE_DATA_WIDTH $TX_SAMPLE_WIDTH \
 ]
 
+set dac_offload_size [expr $dac_data_width / 8 * 2**$dac_fifo_address_width]
 ad_data_offload_create $dac_offload_name \
                        1 \
-                       $dac_offload_type \
+                       $dac_do_mem_type \
                        $dac_offload_size \
                        $dac_data_width \
                        $dac_data_width
@@ -468,8 +477,8 @@ ad_connect  axi_mxfe_rx_jesd/rx_axi/device_reset jesd204_phy_125_126/rx_reset_gt
 #
 if {$ADI_PHY_SEL == 0} {
 # Rx Physical lanes to PHY
-ad_ip_instance xlconcat rx_concat_7_0_p [list NUM_PORTS {8}]
-ad_ip_instance xlconcat rx_concat_7_0_n [list NUM_PORTS {8}]
+ad_ip_instance ilconcat rx_concat_7_0_p [list NUM_PORTS {8}]
+ad_ip_instance ilconcat rx_concat_7_0_n [list NUM_PORTS {8}]
 
 ad_connect  rx_data_0_p rx_concat_7_0_p/In0
 ad_connect  rx_data_1_p rx_concat_7_0_p/In1
@@ -492,8 +501,8 @@ ad_connect  rx_data_7_n rx_concat_7_0_n/In7
 ad_connect  jesd204_phy_121_122/rxp_in rx_concat_7_0_p/dout
 ad_connect  jesd204_phy_121_122/rxn_in rx_concat_7_0_n/dout
 
-ad_ip_instance xlconcat rx_concat_15_8_p [list NUM_PORTS {8}]
-ad_ip_instance xlconcat rx_concat_15_8_n [list NUM_PORTS {8}]
+ad_ip_instance ilconcat rx_concat_15_8_p [list NUM_PORTS {8}]
+ad_ip_instance ilconcat rx_concat_15_8_n [list NUM_PORTS {8}]
 
 ad_connect  rx_data_8_p rx_concat_15_8_p/In0
 ad_connect  rx_data_9_p rx_concat_15_8_p/In1
@@ -563,6 +572,13 @@ ad_connect rx_mxfe_tpl_core/adc_tpl_core/adc_rst cpack_reset_logic/op1
 ad_connect rx_do_rstout_logic/res cpack_reset_logic/op2
 ad_connect cpack_reset_logic/res util_mxfe_cpack/reset
 
+ad_ip_instance util_vector_logic manual_sync_or [list \
+      C_SIZE 1 \
+      C_OPERATION {or} \
+    ]
+ad_connect rx_mxfe_tpl_core/adc_tpl_core/adc_sync_manual_req_out manual_sync_or/Op1
+ad_connect manual_sync_or/Res rx_mxfe_tpl_core/adc_tpl_core/adc_sync_manual_req_in
+
 #
 # rx tpl to cpack
 #
@@ -595,13 +611,13 @@ if {$ADI_PHY_SEL == 0} {
 # Tx Physical lanes to PHY
 #
 for {set i 0} {$i < $MAX_TX_LANES} {incr i} {
-  ad_ip_instance xlslice txp_out_slice_$i [list \
+  ad_ip_instance ilslice txp_out_slice_$i [list \
     DIN_TO [expr $i % 8] \
     DIN_FROM [expr $i % 8] \
     DIN_WIDTH {8} \
     DOUT_WIDTH {1} \
   ]
-  ad_ip_instance xlslice txn_out_slice_$i [list \
+  ad_ip_instance ilslice txn_out_slice_$i [list \
     DIN_TO [expr $i % 8] \
     DIN_FROM [expr $i % 8] \
     DIN_WIDTH {8} \
@@ -668,6 +684,8 @@ for {set i 0} {$i < $TX_NUM_OF_CONVERTERS} {incr i} {
 }
 
 ad_connect ext_sync tx_mxfe_tpl_core/dac_tpl_core/dac_sync_in
+ad_connect tx_mxfe_tpl_core/dac_tpl_core/dac_sync_manual_req_out manual_sync_or/Op2
+ad_connect manual_sync_or/Res tx_mxfe_tpl_core/dac_tpl_core/dac_sync_manual_req_in
 
 #
 # data offload to upack
@@ -731,4 +749,3 @@ ad_cpu_interrupt ps-12 mb-13 axi_mxfe_tx_dma/irq
 ad_cpu_interrupt ps-11 mb-14 axi_mxfe_rx_jesd/irq
 ad_cpu_interrupt ps-10 mb-15 axi_mxfe_tx_jesd/irq
 ad_cpu_interrupt ps-14 mb-8  axi_gpio_2/ip2intc_irpt
-

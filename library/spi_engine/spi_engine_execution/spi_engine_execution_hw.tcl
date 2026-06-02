@@ -1,5 +1,5 @@
 ###############################################################################
-## Copyright (C) 2020-2023 Analog Devices, Inc. All rights reserved.
+## Copyright (C) 2020-2025 Analog Devices, Inc. All rights reserved.
 ### SPDX short identifier: ADIBSD
 ###############################################################################
 
@@ -20,8 +20,9 @@ ad_ip_parameter DEFAULT_SPI_CFG INTEGER 0
 ad_ip_parameter DEFAULT_CLK_DIV INTEGER 0
 ad_ip_parameter DATA_WIDTH INTEGER 8
 ad_ip_parameter NUM_OF_SDI INTEGER 1
-ad_ip_parameter SDI_DELAY INTEGER 0
 ad_ip_parameter SDO_DEFAULT INTEGER 0
+ad_ip_parameter ECHO_SCLK INTEGER 0
+ad_ip_parameter SDI_DELAY INTEGER 0
 
 proc p_elaboration {} {
 
@@ -32,9 +33,7 @@ proc p_elaboration {} {
   # clock and reset interface
 
   ad_interface clock   clk     input 1
-  ad_interface reset   resetn  input 1 if_clk
-
-  ad_interface signal active output 1
+  ad_interface reset-n resetn  input 1 if_clk
 
   # command interface
 

@@ -6,7 +6,7 @@ from os import path
 
 repository = 'hdl'
 project = 'HDL'
-copyright = '2024, Analog Devices, Inc.'
+copyright = '2023-2025, Analog Devices, Inc.'
 author = 'Analog Devices, Inc.'
 version = '' # documentation version, will be printed on the cover page
 
@@ -15,7 +15,6 @@ version = '' # documentation version, will be printed on the cover page
 extensions = [
     'sphinx.ext.todo',
     'adi_doctools',
-    'rst2pdf.pdfbuilder'
 ]
 
 needs_extensions = {
@@ -27,7 +26,15 @@ source_suffix = '.rst'
 
 # -- External docs configuration ----------------------------------------------
 
-interref_repos = ['doctools', 'documentation', 'pyadi-iio']
+interref_repos = [
+        'kuiper',
+        'doctools',
+        'documentation',
+        'no-OS',
+        'precision-converters-firmware',
+        'pyadi-iio',
+        'scopy',
+]
 
 # -- Custom extensions configuration ------------------------------------------
 
@@ -47,7 +54,6 @@ online_wavedrom_js_url = "https://cdnjs.cloudflare.com/ajax/libs/wavedrom/3.1.0"
 
 html_theme = 'cosmic'
 html_static_path = ['sources']
-html_css_files = ["custom.css"]
 html_favicon = path.join("sources", "icon.svg")
 
 html_theme_options = {

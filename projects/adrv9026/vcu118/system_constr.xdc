@@ -1,5 +1,5 @@
 ###############################################################################
-## Copyright (C) 2024 Analog Devices, Inc. All rights reserved.
+## Copyright (C) 2024-2025 Analog Devices, Inc. All rights reserved.
 ### SPDX short identifier: ADIBSD
 ###############################################################################
 
@@ -19,14 +19,14 @@ set_property -dict {PACKAGE_PIN AL46} [get_ports rx_data_n[2]]                  
 set_property -dict {PACKAGE_PIN AJ45} [get_ports rx_data_p[3]]                                       ; ## A10  FMC_DP3_M2C_P   MGTYRXP3_121
 set_property -dict {PACKAGE_PIN AJ46} [get_ports rx_data_n[3]]                                       ; ## A11  FMC_DP3_M2C_N   MGTYRXN3_121
 
-set_property -dict {PACKAGE_PIN AP42} [get_ports tx_data_p[0]]                                       ; ## A22  FMC_DP1_C2M_P   MGTYTXP1_121
-set_property -dict {PACKAGE_PIN AP43} [get_ports tx_data_n[0]]                                       ; ## A23  FMC_DP1_C2M_N   MGTYTXN1_121
-set_property -dict {PACKAGE_PIN AT42} [get_ports tx_data_p[1]]                                       ; ## C2   FMC_DP0_C2M_P   MGTYTXP0_121
-set_property -dict {PACKAGE_PIN AT43} [get_ports tx_data_n[1]]                                       ; ## C3   FMC_DP0_C2M_N   MGTYTXN0_121
-set_property -dict {PACKAGE_PIN AM42} [get_ports tx_data_p[2]]                                       ; ## A26  FMC_DP2_C2M_P   MGTYTXP2_121
-set_property -dict {PACKAGE_PIN AM43} [get_ports tx_data_n[2]]                                       ; ## A27  FMC_DP2_C2M_N   MGTYTXN2_121
-set_property -dict {PACKAGE_PIN AL40} [get_ports tx_data_p[3]]                                       ; ## A30  FMC_DP3_C2M_P   MGTYTXP3_121
-set_property -dict {PACKAGE_PIN AL41} [get_ports tx_data_n[3]]                                       ; ## A31  FMC_DP3_C2M_N   MGTYTXN3_121
+set_property -dict {PACKAGE_PIN AL40} [get_ports tx_data_p[0]]                                       ; ## A30  FMC_DP3_C2M_P   MGTYTXP3_121
+set_property -dict {PACKAGE_PIN AL41} [get_ports tx_data_n[0]]                                       ; ## A31  FMC_DP3_C2M_N   MGTYTXN3_121
+set_property -dict {PACKAGE_PIN AM42} [get_ports tx_data_p[1]]                                       ; ## A26  FMC_DP2_C2M_P   MGTYTXP2_121
+set_property -dict {PACKAGE_PIN AM43} [get_ports tx_data_n[1]]                                       ; ## A27  FMC_DP2_C2M_N   MGTYTXN2_121
+set_property -dict {PACKAGE_PIN AP42} [get_ports tx_data_p[2]]                                       ; ## A22  FMC_DP1_C2M_P   MGTYTXP1_121
+set_property -dict {PACKAGE_PIN AP43} [get_ports tx_data_n[2]]                                       ; ## A23  FMC_DP1_C2M_N   MGTYTXN1_121
+set_property -dict {PACKAGE_PIN AT42} [get_ports tx_data_p[3]]                                       ; ## C2   FMC_DP0_C2M_P   MGTYTXP0_121
+set_property -dict {PACKAGE_PIN AT43} [get_ports tx_data_n[3]]                                       ; ## C3   FMC_DP0_C2M_N   MGTYTXN0_121
 
 set_property -dict {PACKAGE_PIN AT39 IOSTANDARD LVDS} [get_ports rx_sync_p]                          ; ## G9   FMC_LA03_P      IO_L4P_T0U_N6_DBC_AD7P_43
 set_property -dict {PACKAGE_PIN AT40 IOSTANDARD LVDS} [get_ports rx_sync_n]                          ; ## G10  FMC_LA03_N      IO_L4N_T0U_N7_DBC_AD7N_43
@@ -94,3 +94,6 @@ set_property -dict {PACKAGE_PIN AP37 IOSTANDARD LVCMOS18} [get_ports spi_mosi]  
 
 create_clock -name ref_clk   -period  4.00 [get_ports ref_clk_p]
 create_clock -name core_clk  -period  4.00 [get_ports core_clk_p]
+
+set_property CLOCK_DEDICATED_ROUTE FALSE [get_nets i_core_clk_ibufds_1/O]
+set_property CLOCK_DEDICATED_ROUTE BACKBONE [get_nets core_clk]

@@ -55,23 +55,30 @@ be described:
 1. Needed tools
 -------------------------------------------------------------------------------
 
-#. Install the required FPGA design suite. We use `AMD Xilinx Vivado`_,
-   `Intel Quartus Prime Pro and Standard`_, `Lattice Radiant`_ and
-   `Lattice Propel`_.
-   You can find information about the proper version in the section
-   :ref:`build_hdl tool-versions`.
-   Make sure that you're always using the latest release.
+We offer reference designs for our evaluation boards, on three FPGA platforms:
+from AMD Xilinx, from Intel and from Lattice.
+
+Each one of these platforms has their own FPGA design suites:
+
+- AMD Xilinx with `AMD Xilinx Vivado and Vitis`_ (HDL and software)
+- Intel with `Intel Quartus Prime Pro and Standard`_
+- Lattice with `Lattice Radiant`_ and `Lattice Propel`_
+
 #. The **required** Vivado/Quartus/Propel/Radiant version can be found in:
 
-   -  :git-hdl:`scripts/adi_env.tcl`
-   -  or in the `release notes <https://github.com/analogdevicesinc/hdl/releases>`__
+   - :git-hdl:`scripts/adi_env.tcl`
+   - or in the `release notes <https://github.com/analogdevicesinc/hdl/releases>`__
 
-#. Download the tools from the following links:
+   More details can be found at :ref:`build_hdl tool-versions`.
+   Make sure that you're always using the latest release.
 
-   -  :xilinx:`AMD tools <support/download/index.html/content/xilinx/en/downloadNav/vivado-design-tools.html>`
+#. Download and install the **Linux version** of the FPGA design suite that
+   you want to use, from the following links:
+
+   -  :xilinx:`AMD tools <support/download/index.html/content/xilinx/en/downloadNav/vivado-design-tools.html>` *
       (make sure you're downloading the proper installer.
       For full installation, it is better to choose the one that downloads
-      and installs both Vivado and Vitis at the same time)
+      and installs **both Vivado and Vitis** at the same time)
    -  :intel:`Intel tools <content/www/us/en/programmable/downloads/download-center.html>`
    -  `Lattice tools <https://www.latticesemi.com/en/Products/DesignSoftwareAndIP>`__
 
@@ -81,6 +88,12 @@ be described:
 #. We are using `git <https://git-scm.com/>`__ for version control and
    `GNU Make <https://www.gnu.org/software/make/>`__ to build the
    projects. Depending on what OS you're using, you have these options:
+
+.. admonition:: Legend
+
+   \* - the Linux version is required for the tools, because even if you're OS
+   is Windows, you need to use WSL and install the tools under WSL (Windows
+   Subsystem for Linux).
 
 .. _build_hdl setup-repo:
 
@@ -101,7 +114,8 @@ If you want to build the sources, ADI makes them available on the
 `clone <https://git-scm.com/book/en/v2/Git-Basics-Getting-a-Git-Repository>`__
 the repository. This is the best method to get the sources.
 
-Here, we are cloning the repository inside a directory called **adi**.
+Here, we are cloning the repository inside the home directory of your Linux
+file system.
 Please refer to the :ref:`git_repository` section for more details.
 
 Cloning is now done using HTTPS and a classic PAT (Personal Access Token).
@@ -110,7 +124,9 @@ More details on how to do this,
 
 .. shell:: bash
 
+   ~/
    $git clone https://github.com/analogdevicesinc/hdl.git
+   $cd hdl
 
 If you use WSL, you must clone your HDL repository in the WSL file system.
 For example ``\\wsl.localhost\Ubuntu\home\username\hdl``.
@@ -169,6 +185,7 @@ for the current session (or open a new one) and call the defined method:
 
 .. shell:: bash
 
+   ~/hdl
    $source ~/.bashrc
    $load_amd
 
@@ -190,10 +207,10 @@ For AMD Xilinx Vivado:
 .. shell:: bash
 
    ~/hdl
-   $source /opt/Xilinx/Vivado/202x.x/settings64.sh
+   $source /opt/Xilinx/Vivado/2023.2/settings64.sh
 
-   $export PATH=$PATH:/opt/Xilinx/Vivado/202x.x/bin:/opt/Xilinx/Vitis/202x.x/bin
-   $export PATH=$PATH:/opt/Xilinx/Vitis/202x.x/gnu/microblaze/nt/bin
+   $export PATH=$PATH:/opt/Xilinx/Vivado/2023.2/bin:/opt/Xilinx/Vitis/2023.2/bin
+   $export PATH=$PATH:/opt/Xilinx/Vitis/2023.2/gnu/microblaze/nt/bin
 
 For Intel Quartus:
 
@@ -207,51 +224,12 @@ For Lattice:
 .. shell:: bash
 
    ~/hdl
-   $export PATH=$PATH:/opt/lscc/propel/202x.x/builder/rtf/bin/lin64
-   $export PATH=$PATH:/opt/lscc/radiant/202x.x/bin/lin64
+   $export PATH=$PATH:/opt/lscc/propel/2023.2/builder/rtf/bin/lin64
+   $export PATH=$PATH:/opt/lscc/radiant/2023.2/bin/lin64
 
 3b. Windows environment setup
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Cygwin
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Because GNU Make is not supported on Windows, you need to install
-`Cygwin <https://www.cygwin.com/>`__, which is a UNIX-like environment
-and command-line interface for Microsoft Windows.
-
-.. caution::
-
-   Change the path and the tool version accordingly to your installation!
-
-For AMD Xilinx Vivado:
-
-.. shell:: bash
-
-   ~/hdl
-   $export PATH=$PATH:/cygdrive/c/Xilinx/Vivado/202x.x/bin
-   $export PATH=$PATH:/cygdrive/c/Xilinx/Vivado_HLS/202x.x/bin
-   $export PATH=$PATH:/cygdrive/c/Xilinx/Vitis/202x.x/bin
-   $export PATH=$PATH:/cygdrive/c/Xilinx/Vitis/202x.x/gnu/microblaze/nt/bin
-   $export PATH=$PATH:/cygdrive/c/Xilinx/Vitis/202x.x/gnu/arm/nt/bin
-   $export PATH=$PATH:/cygdrive/c/Xilinx/Vitis/202x.x/gnu/microblaze/linux_toolchain/nt64_be/bin
-   $export PATH=$PATH:/cygdrive/c/Xilinx/Vitis/202x.x/gnu/microblaze/linux_toolchain/nt64_le/bin
-   $export PATH=$PATH:/cygdrive/c/Xilinx/Vitis/202x.x/gnu/aarch32/nt/gcc-arm-none-eabi/bin
-
-For Intel Quartus:
-
-.. shell:: bash
-
-   ~/hdl
-   $export PATH=$PATH:/cygdrive/c/intelFPGA_pro/2x.x/quartus/bin64
-
-For Lattice:
-
-.. shell:: bash
-
-   ~/hdl
-   $export PATH=$PATH:/cygdrive/c/lscc/propel/202x.x/builder/rtf/bin/nt64
-   $export PATH=$PATH:/cygdrive/c/lscc/radiant/202x.x/bin/nt64
 
 WSL
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -297,13 +275,13 @@ In the link above, you can find the installation guide for WSL on Windows.
 .. collapsible:: How to install the tools in WSL
 
    Before building any project,
-   :red:`it is necessary to install the Linux version for Vivado, in the WSL file system`,
-   because on the Ubuntu distribution on WSL you cannot
-   run projects from on the Windows version of them. When you have to choose
-   the installation path, choose the location where WSL is installed
-   ``\\wsl.localhost\Ubuntu\opt``.
+   :red:`it is necessary to install the Linux version for Vivado & Vitis, in the WSL file system`,
+   because on the Ubuntu distribution on WSL you cannot run projects from on
+   the Windows version of them. When you have to choose
+   the installation path, choose the location where WSL is installed, in its
+   /opt folder ``\\wsl.localhost\Ubuntu\opt``.
 
-   Also, to get the best performance, you must clone your HDL repository in
+   Also, to get the best performance, you **must clone** your HDL repository in
    the WSL file system. For example: ``\\wsl.localhost\Ubuntu\home\username\hdl``.
 
    For more information you can consult the following link:
@@ -318,10 +296,13 @@ In the link above, you can find the installation guide for WSL on Windows.
       $chmod +x FPGAs_AdaptiveSoCs_Unified_2023.2_1113_1001_Lin64.bin
       $sudo ./FPGAs_AdaptiveSoCs_Unified_2023.2_1113_1001_Lin64.bin
 
+   The installation directory for AMD Xilinx Vivado & Vitis we chose to be
+   ``/opt/Xilinx``.
+
    Now, you may have noticed that the installation raised a couple of
    warnings, such as:
 
-   .. code-block::
+   .. shell:: bash
 
       $/tools/Xilinx/Vivado/2023.2/bin/rdiArgs.sh: line 31: warning: setlocale: LC_ALL: cannot change locale (en_US.UTF-8): No such file or directory
       /bin/bash: warning: setlocale: LC_ALL: cannot change locale (en_US.UTF-8)
@@ -341,25 +322,27 @@ In the link above, you can find the installation guide for WSL on Windows.
       $cd /opt/Xilinx/Vitis/2023.2/scripts
       $sudo ./installLibs.sh
       $sudo apt-get install libxrender1 libxtst6 libxi6
-      $sudo apt-get install libtinfo5 # to be used only in case you have issues with missing libtinfo5 when building a project
+      $sudo apt-get install libtinfo5
+      $wget http://security.ubuntu.com/ubuntu/pool/universe/n/ncurses/libtinfo5_6.3-2ubuntu0.1_amd64.deb
+      $sudo apt install ./libtinfo5_6.3-2ubuntu0.1_amd64.deb
 
    Then you need to add the following paths to your $PATH environment variable:
 
    .. shell:: bash
 
-      $export PATH=$PATH:/opt/path_to/Xilinx/Vivado/202x.x/bin
-      $export PATH=$PATH:/opt/path_to/Xilinx/Vivado_HLS/202x.x/bin
+      $export PATH=$PATH:/opt/Xilinx/Vivado/2023.2/bin
+      $export PATH=$PATH:/opt/Xilinx/Vivado_HLS/2023.2/bin
 
-      $export PATH=$PATH:/opt/path_to/Xilinx/Vitis/202x.x/bin
-      $export PATH=$PATH:/opt/path_to/Xilinx/Vitis/202x.x/gnu/microblaze/nt/bin
-      $export PATH=$PATH:/opt/path_to/Xilinx/Vitis/202x.x/gnu/arm/nt/bin
-      $export PATH=$PATH:/opt/path_to/Xilinx/Vitis/202x.x/gnu/microblaze/linux_toolchain/nt64_be/bin
-      $export PATH=$PATH:/opt/path_to/Xilinx/Vitis/202x.x/gnu/microblaze/linux_toolchain/nt64_le/bin
-      $export PATH=$PATH:/opt/path_to/Xilinx/Vitis/202x.x/gnu/aarch32/nt/gcc-arm-none-eabi/bin
+      $export PATH=$PATH:/opt/Xilinx/Vitis/2023.2/bin
+      $export PATH=$PATH:/opt/Xilinx/Vitis/2023.2/gnu/microblaze/nt/bin
+      $export PATH=$PATH:/opt/Xilinx/Vitis/2023.2/gnu/arm/nt/bin
+      $export PATH=$PATH:/opt/Xilinx/Vitis/2023.2/gnu/microblaze/linux_toolchain/nt64_be/bin
+      $export PATH=$PATH:/opt/Xilinx/Vitis/2023.2/gnu/microblaze/linux_toolchain/nt64_le/bin
+      $export PATH=$PATH:/opt/Xilinx/Vitis/2023.2/gnu/aarch32/nt/gcc-arm-none-eabi/bin
 
-.. collapsible:: Alternatives to Cygwin/WSL/Linux terminal
+.. collapsible:: Alternatives to WSL/Linux terminal
 
-   If you do not want to use neither Cygwin nor WSL, there might still be some
+   If you do not want to use WSL/Linux/Cygwin, there might still be some
    alternative. There are ``make`` alternatives for **Windows Command
    Prompt**, minimalist GNU for Windows (**MinGW**), or the **Cygwin
    variations** installed by the tools itself.
@@ -368,7 +351,7 @@ In the link above, you can find the installation guide for WSL on Windows.
    Some of these may not be fully functional with our scripts and/or projects.
    If you are an Intel user, the **Nios II Command Shell** does support make.
    If you are an AMD user, use the **gnuwin** installed as part of the SDK,
-   usually at ``C:\Xilinx\Vitis\202x.x\gnuwin\bin``.
+   usually at ``C:\Xilinx\Vitis\2023.2\gnuwin\bin``.
 
 **How to verify your environment setup**
 
@@ -382,9 +365,125 @@ current environment, for example:
    $which make
     /usr/bin/make
    $which vivado
-    /opt/Xilinx/Vivado/2023.2/bin/vivado
+    /opt/Xilinx/Vivado/2024.2/bin/vivado
    $which quartus
     /opt/intelFPGA/24.2/quartus/bin/quartus
+
+.. _build_hdl cygwin:
+
+Cygwin (NOT RECOMMENDED)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Using `Cygwin <https://www.cygwin.com/>`__ is not recommended anymore, and if
+one encounters issues with this flow, we will not offer support for this.
+
+:red:`We do not offer support on Cygwin-related issues or on Vivado/Vitis issues!`
+
+Please note, that using Cygwin to build the HDL project has limitations!
+One cannot build the boot file needed for the setup, but instead should use
+the Vivado Tcl console building mode to build the BOOT.BIN (see
+"Building the BOOT.BIN in Vivado GUI").
+
+.. collapsible:: Installation paths for tools in Cygwin
+
+   .. caution::
+
+      Change the path and the tool version accordingly to your installation!
+
+   For AMD Xilinx Vivado:
+
+   .. shell:: bash
+
+      ~/hdl
+      $export PATH=$PATH:/cygdrive/c/Xilinx/Vivado/2023.2/bin
+      $export PATH=$PATH:/cygdrive/c/Xilinx/Vivado_HLS/2023.2/bin
+      $export PATH=$PATH:/cygdrive/c/Xilinx/Vitis/2023.2/bin
+      $export PATH=$PATH:/cygdrive/c/Xilinx/Vitis/2023.2/gnu/microblaze/nt/bin
+      $export PATH=$PATH:/cygdrive/c/Xilinx/Vitis/2023.2/gnu/arm/nt/bin
+      $export PATH=$PATH:/cygdrive/c/Xilinx/Vitis/2023.2/gnu/microblaze/linux_toolchain/nt64_be/bin
+      $export PATH=$PATH:/cygdrive/c/Xilinx/Vitis/2023.2/gnu/microblaze/linux_toolchain/nt64_le/bin
+      $export PATH=$PATH:/cygdrive/c/Xilinx/Vitis/2023.2/gnu/aarch32/nt/gcc-arm-none-eabi/bin
+
+   For Intel Quartus:
+
+   .. shell:: bash
+
+      ~/hdl
+      $export PATH=$PATH:/cygdrive/c/intelFPGA_pro/2x.x/quartus/bin64
+
+   For Lattice:
+
+   .. shell:: bash
+
+      ~/hdl
+      $export PATH=$PATH:/cygdrive/c/lscc/propel/2023.2/builder/rtf/bin/nt64
+      $export PATH=$PATH:/cygdrive/c/lscc/radiant/2023.2/bin/nt64
+
+.. collapsible::  Building the libraries and the project in Vivado GUI
+
+   #. Open Vivado GUI
+   #. In the Tcl console, run ``pwd`` to see the location you're at
+   #. Go to the project folder using the ``cd`` Linux command. For example,
+
+      :code:`cd c:/github/hdl/projects/ad9081_fmca_ebz/zcu102`
+
+   #. Now you need to source the script
+
+      :code:`source ../../scripts/adi_make.tcl`
+
+      This will give you access to two commands (adi_make::lib and
+      adi_make::boot_bin).
+
+   Prior to building the project, the necessary libraries must be built, so please
+   follow thoroughly these steps!
+
+   To build all the libraries on which the project depends on, run
+
+   :code:`adi_make::lib all`
+
+   To build only one specific library, you need to
+   specify its name, for example :code:`adi_make::lib axi_dmac` or
+   :code:`adi_make::lib jesd204/jesd204_rx`.
+
+   To build the project itself, you need to run
+
+   :code:`source ./system_project.tcl`
+
+   Then go on to the next step of building the boot file, BOOT.BIN.
+
+.. collapsible:: Building the BOOT.BIN in Vivado GUI
+
+   This requires either having the project built with ``make`` command
+   (:ref:`build_hdl build-amd-project`), or with the flow
+   "Building the libraries and the project in Vivado GUI".
+   To check if you are prepared to build the BOOT.BIN, verify in the project
+   folder if you have an ``*.sdk/system_top.xsa`` file (for example,
+   hdl/projects/ad9081_fmca_ebz/zcu102/ad9081_fmca_ebz_zcu102.sdk/system_top.xsa).
+
+   If you do, then proceed with the following:
+
+   #. Open Vivado GUI
+   #. In the Tcl console, run ``pwd`` to see the location you're at
+   #. Go to the project folder using the ``cd`` Linux command. For example,
+
+      :code:`cd c:/github/hdl/projects/ad9081_fmca_ebz/zcu102`
+
+   #. Now you need to source the script
+
+      :code:`source ../../scripts/adi_make.tcl`
+
+   #. Run :code:`adi_make::boot_bin`. Wait up to 5 minutes.
+   #. The BOOT.BIN will be found in a folder called "output".
+
+.. collapsible:: Example for building the AD9081-FMCA-EBZ/ZCU102 project and its BOOT.BIN
+
+   .. code-block:: tcl
+
+      cd c:/github/hdl/projects/ad9081_fmca_ebz/zcu102
+      source ../../scripts/adi_make.tcl
+      adi_make::lib all
+      source ./system_project.tcl
+      adi_make::boot_bin
 
 .. _build_hdl build:
 
@@ -411,19 +510,21 @@ in hardware using the Vivado version
 :ref:`specific for that branch <build_hdl needed-tools>`.
 
 Simply put, to build a project you just run ``make`` in your Linux terminal
-or in Cygwin. For more details, please read the rest of the documentation.
+or in WSL. For more details, please read the rest of the documentation.
 
 To clean only a project or an IP core before building it again,
 run ``make clean``.
-To clean both the already built IP cores which the project depends on and the project,
-run ``make clean-all``.
+To clean both the already built IP cores which the project depends on and the
+project, run ``make clean-all``.
+
+.. _build_hdl build-amd-project:
 
 4a. Building an AMD project
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 An AMD project is built the same way as an Intel project. The only
 exception is that there are a few 'sub-make(s)' for the library
-components. The way of building a project in Cygwin and WSL is almost the same.
+components.
 
 You just need to go to the hdl/projects folder, choose the ADI part that you
 want to use, then enter the folder of the FPGA carrier that you want, and run
@@ -475,8 +576,38 @@ Running the command below will create a folder named **LVDSCMOSN1**.
 
    make LVDS_CMOS_N=1
 
-Enabling Out-of-Context synthesis
+Available build flags and parameters
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Below are some of the available parameters and system variables that can be used
+when building a project:
+
+- **ADI_EXTRACT_PORTS**: if set, extracts port properties from a predefined list
+  of IPs into 'ports_properties.txt'.
+- **ADI_GENERATE_BIN**: if set, generates a binary bitstream file (.bin)
+  in addition to the .xsa hardware platform.
+- **ADI_GENERATE_UTILIZATION**: if set, generates CSV and log files detailing
+  resource utilization for the design and specific IPs.
+- **ADI_GENERATE_XPA**: if set, runs a Xilinx Power Analysis (XPA) and generates
+  a summary report.
+- **ADI_MAX_OOC_JOBS**: specifies the number of parallel jobs to use for
+  Out-of-Context (OOC) synthesis.
+- **ADI_MAX_THREADS**: specifies the maximum number of threads for Vivado
+  operations. Default value is 8.
+- **ADI_NO_BITSTREAM_COMPRESSION**: if set, disables compression of the final
+  bitstream file.
+- **ADI_POST_ROUTE_POD_PRE_SCRIPT**: specifies the path to a Tcl script to be
+  executed before the phys_opt_design (POD) stage.
+- **ADI_POST_ROUTE_SCRIPT**: specifies the path to a Tcl script to be executed
+  after the routing design step.
+- **ADI_POWER_OPTIMIZATION**: if set to 1, enables power optimization during the
+  implementation run.
+- **ADI_PROJECT_DIR**: specifies a base directory for output files such as logs
+  and reports.
+- **ADI_SKIP_SYNTHESIS**: if set, the entire procedure will exit before starting
+  synthesis.
+- **ADI_USE_OOC_SYNTHESIS**: if set to 1, launches synthesis for OOC IP modules
+  in parallel.
 
 You can opt in for out-of-context synthesis during the build by defining
 the ``ADI_USE_OOC_SYNTHESIS`` system variable. By setting the
@@ -666,6 +797,9 @@ Starting with Vivado 2019.3, the output file extension was changed from
    script will create a board design in IPI (IP Integrator), generate all the
    IP targets, synthesize the netlist and implementation.
 
+You can set the ADI_GENERATE_BIN environment variable to write the binary bit file
+without header **.bin** and the binary bit file **.bit**.
+
 4b. Building an Intel project
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -849,19 +983,25 @@ The **sof** file is used to program the device.
 
 The Lattice build is in a very early version. We are just adding the first
 version of library infrastructure support.
-Currently, we only have a single early-version base design that builds almost
-like the other ones. For Lattice, there are separate tools for creating
-a block design **(Propel Builder)** and building an HDL design **(Radiant)**.
 
-To build a project, go to the carrier folder and run ``make``. For now, you can
-try to build the only base design we have available for
-**CertusPro-NX Evaluation Board** by entering the base design directory and
-running ``make``.
+.. note::
+
+   Currently, we are supporting the
+   `ad738x_fmc <https://analogdevicesinc.github.io/hdl/projects/ad738x_fmc/index.html>`__
+   project for the **LFCPNX-EVN** carrier board, in the
+   `hdl/projects/ad738x_fmc/lfcpnx <https://github.com/analogdevicesinc/hdl/tree/main/projects/ad738x_fmc/lfcpnx>`__ folder.
+   For Lattice, there are separate tools for creating
+   a block design **(Propel Builder)** and building an HDL design **(Radiant)**.
+
+To build a project, go to the carrier folder and run ``make``.
+The **ad738x_fmc** project is available for the
+**CertusPro-NX Evaluation Board** and can be built by entering the
+``hdl/projects/ad738x_fmc/lfcpnx`` directory and running ``make``.
 
 .. shell:: bash
 
    ~/hdl
-   $cd projects/common/lfcpnx
+   $cd projects/ad738x_fmc/lfcpnx
    $make
 
 This assumes that you have the tools and licenses set up correctly.
@@ -959,7 +1099,7 @@ In general, always run ``make`` within a project folder such as
 not be a need for you to run ``make`` inside the library or root folders.
 The ``make`` framework passes the top level 'targets' to any sub-makes
 inside its sub-folders. What this means, is that if you run ``make`` inside
-**hdl/projects/daq2**, it builds all the carriers (**kc705**, **a10soc**,
+**hdl/projects/daq2**, it builds all the carriers (**a10soc**,
 **kcu105**, **zc706** to **zcu102**) instead of just the target carrier.
 
 The following targets/arguments are supported:
@@ -1001,9 +1141,9 @@ e.g. ``component.xml`` and ``.lock`` files.
 -------------------------------------------------------------------------------
 
 First, you have to write the SD card with the
-:external+documentation:doc:`ADI Kuiper image <linux/kuiper/index>`.
+:external+kuiper:doc:`ADI Kuiper image <index>`.
 Check this
-:external+documentation:ref:`tutorial <kuiper sdcard>`.
+:external+kuiper:ref:`tutorial <quick-start>`.
 
 Once you are done with that, you can go on with the following steps.
 
@@ -1229,7 +1369,7 @@ ignored, they won't affect the functionality of the IP or the project.
 However, you may not be able to archive these projects. The irony is
 that it does copy these files to the project area, but ignores them.
 
-.. _AMD Xilinx Vivado: https://www.xilinx.com/support/download.html
+.. _AMD Xilinx Vivado and Vitis: https://www.xilinx.com/support/download.html
 
 .. _Intel Quartus Prime Pro and Standard: https://www.intel.com/content/www/us/en/products/details/fpga/development-tools/quartus-prime/resource.html
 

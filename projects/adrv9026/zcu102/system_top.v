@@ -1,6 +1,6 @@
 // ***************************************************************************
 // ***************************************************************************
-// Copyright (C) 2023-2024 Analog Devices, Inc. All rights reserved.
+// Copyright (C) 2023-2025 Analog Devices, Inc. All rights reserved.
 //
 // In this HDL repository, there are many different and unique modules, consisting
 // of various HDL (Verilog or VHDL) components. The individual modules are
@@ -124,7 +124,6 @@ module system_top (
 
   assign gpio_i[94:69] = gpio_o[94:69];
   assign gpio_i[31:21] = gpio_o[31:21];
-  assign rx_os_sync = 1'b0;
 
   // instantiations
 
@@ -150,7 +149,7 @@ module system_top (
     .OB (rx_sync_n));
 
   OBUFDS i_obufds_rx_os_sync (
-    .I (rx_os_sync),
+    .I (~rx_os_sync),
     .O (rx_os_sync_p),
     .OB (rx_os_sync_n));
 
@@ -221,22 +220,24 @@ module system_top (
   assign spi_csn_ad9528 =  spi_csn[1];
 
   system_wrapper i_system_wrapper (
-    .dac_fifo_bypass (gpio_o[69]),
     .gpio_i (gpio_i),
     .gpio_o (gpio_o),
     .gpio_t (gpio_t),
     .core_clk (core_clk),
-    .rx_data_0_n (rx_data_n[0]),
-    .rx_data_0_p (rx_data_p[0]),
-    .rx_data_1_n (rx_data_n[1]),
-    .rx_data_1_p (rx_data_p[1]),
+    .rx_data_0_n (rx_data_n[1]),
+    .rx_data_0_p (rx_data_p[1]),
+    .rx_data_1_n (rx_data_n[0]),
+    .rx_data_1_p (rx_data_p[0]),
     .rx_data_2_n (rx_data_n[2]),
     .rx_data_2_p (rx_data_p[2]),
     .rx_data_3_n (rx_data_n[3]),
     .rx_data_3_p (rx_data_p[3]),
     .rx_ref_clk_0 (ref_clk),
+    .rx_os_ref_clk_0 (ref_clk),
     .rx_sync_0 (rx_sync),
+    .rx_os_sync (rx_os_sync),
     .rx_sysref_0 (sysref),
+    .rx_os_sysref (sysref),
     .spi0_sclk (spi_clk),
     .spi0_csn (spi_csn),
     .spi0_miso (spi_miso),
@@ -245,14 +246,14 @@ module system_top (
     .spi1_csn (),
     .spi1_miso (1'b0),
     .spi1_mosi (),
-    .tx_data_0_n (tx_data_n[0]),
-    .tx_data_0_p (tx_data_p[0]),
-    .tx_data_1_n (tx_data_n[1]),
-    .tx_data_1_p (tx_data_p[1]),
-    .tx_data_2_n (tx_data_n[2]),
-    .tx_data_2_p (tx_data_p[2]),
-    .tx_data_3_n (tx_data_n[3]),
-    .tx_data_3_p (tx_data_p[3]),
+    .tx_data_0_n (tx_data_n[3]),
+    .tx_data_0_p (tx_data_p[3]),
+    .tx_data_1_n (tx_data_n[2]),
+    .tx_data_1_p (tx_data_p[2]),
+    .tx_data_2_n (tx_data_n[1]),
+    .tx_data_2_p (tx_data_p[1]),
+    .tx_data_3_n (tx_data_n[0]),
+    .tx_data_3_p (tx_data_p[0]),
     .tx_ref_clk_0 (ref_clk),
     .tx_sync_0 (tx_sync),
     .tx_sysref_0 (sysref));

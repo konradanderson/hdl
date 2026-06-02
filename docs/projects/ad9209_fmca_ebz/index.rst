@@ -6,8 +6,8 @@ AD9209-FMCA-EBZ HDL project
 Overview
 -------------------------------------------------------------------------------
 
-The :adi:`AD9209-FMCA-EBZ` reference design is a processor-based embedded
-system. This reference design works with :adi:`AD9209-FMCA-EBZ`/
+The :git-hdl:`AD9209-FMCA-EBZ <projects/ad9209_fmca_ebz>` reference design is
+a processor-based embedded system. This reference design works with
 :adi:`AD9081-FMCA-EBZ <EVAL-AD9081>` (RX only) /
 :adi:`AD9082-FMCA-EBZ <EVAL-AD9082>` (RX only) / :adi:`EVAL-AD9986` (RX only) /
 :adi:`EVAL-AD9988` (RX only).
@@ -28,7 +28,6 @@ All cores from the receive chain are programmable through an AXI-Lite interface.
 Supported boards
 -------------------------------------------------------------------------------
 
-- :adi:`AD9209-FMCA-EBZ`
 - :adi:`AD9081-FMCA-EBZ <EVAL-AD9081>` *
 - :adi:`AD9082-FMCA-EBZ <EVAL-AD9082>` *
 - :adi:`EVAL-AD9988` *
@@ -36,7 +35,7 @@ Supported boards
 
 .. note::
 
-   **\*** - only the RX path would be used!
+   **\*** - only the RX path is used!
 
 Supported devices
 -------------------------------------------------------------------------------
@@ -172,58 +171,28 @@ SPI connections
 GPIOs
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. list-table::
-   :widths: 25 25 25 25
-   :header-rows: 2
+===========  =========  =======  =======
+GPIO signal  Direction  HDL no.  Versal
+===========  =========  =======  =======
+rxen[1:0]    OUT        57:56    25:24
+rstb         OUT        55       23
+hmc_sync     OUT        54       22
+irqb[1:0]    IN         53:52    21:20
+agc3[1:0]    IN         51:50    19:18
+agc2[1:0]    IN         49:48    17:16
+agc1[1:0]    IN         47:46    15:14
+agc0[1:0]    IN         45:44    13:12
+hmc_gpio1    INOUT      43       11
+gpio[10:0]   INOUT      42:32    10:0
+===========  =========  =======  =======
 
-   * - GPIO signal
-     - Direction
-     - HDL GPIO EMIO
-     - Software GPIO
-   * -
-     - (from FPGA view)
-     -
-     - Versal
-   * - rxen[1:0]
-     - OUT
-     - 57:56
-     - 135:134
-   * - rstb
-     - OUT
-     - 55
-     - 133
-   * - hmc_sync
-     - OUT
-     - 54
-     - 132
-   * - irqb[1:0]
-     - IN
-     - 53:52
-     - 131:130
-   * - agc3[1:0]
-     - IN
-     - 51:50
-     - 129:128
-   * - agc2[1:0]
-     - IN
-     - 49:48
-     - 127:126
-   * - agc1[1:0]
-     - IN
-     - 47:46
-     - 125:124
-   * - agc0[1:0]
-     - IN
-     - 45:44
-     - 123:122
-   * - hmc_gpio1
-     - INOUT
-     - 43
-     - 121
-   * - gpio[10:0]
-     - INOUT
-     - 42:32
-     - 120:110
+.. admonition:: Legend
+   :class: note
+
+   - GPIO signal = name of the GPIO in the HDL project
+   - Direction = from the FPGA point of view
+   - HDL no. = HDL GPIO EMIO
+   - Versal = Software GPIOs, to be used in device trees
 
 Interrupts
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -254,8 +223,10 @@ Example for building the project with parameters:
 .. shell::
 
    $cd hdl/projects/ad9209_fmca_ebz/vck190
-   $make RX_LANE_RATE=16.5 RX_JESD_L=8 \
-   $     RX_JESD_M=4 RX_JESD_S=1 \
+   $make RX_LANE_RATE=16.5 \
+   $     RX_JESD_L=8 \
+   $     RX_JESD_M=4 \
+   $     RX_JESD_S=1 \
    $     RX_JESD_NP=16
 
 The following dropdowns contain tables with the parameters that can be used to
@@ -390,6 +361,7 @@ HDL related
 Software related
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+- AD9209/VCK190 Linux device tree at :git-linux:`arch/arm64/boot/dts/xilinx/versal-vck190-reva-ad9209.dts`
 - :dokuwiki:`[Wiki] AD9081-FMCA-EBZ Linux driver wiki page <resources/tools-software/linux-drivers/iio-mxfe/ad9081>`
   applies to the AD9209-FMCA-EBZ board as well, just the RX side
 - Python support:

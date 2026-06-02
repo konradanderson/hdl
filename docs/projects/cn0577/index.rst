@@ -7,9 +7,9 @@ Overview
 -------------------------------------------------------------------------------
 
 The :adi:`CN0577` provides an analog front-end and an FMC
-digital interface for :adi:`LTC2387-18`, its core. It is a low noise, high
-speed successive approximation register (SAR) ADC with a resolution of 18 bits
-and sampling rate up to 15MSPS.
+digital interface for :adi:`LTC2387-18`, its core. It is a low
+noise, high speed successive approximation register (SAR) ADC with a resolution
+of 18 bits and sampling rate up to 15MSPS.
 
 :adi:`CN0577` includes an on-board reference oscillator and a
 retiming circuit to minimize signal-to-noise ratio (SNR) degradation due to the
@@ -28,18 +28,18 @@ Supported boards
 Supported devices
 -------------------------------------------------------------------------------
 
-- :adi:`ADAQ23876`
 - :adi:`LTC2387-18`
 
 Supported carriers
 -------------------------------------------------------------------------------
 
-- :xilinx:`ZedBoard <products/boards-and-kits/1-8dyf-11.html>` on FMC slot
+- `ZedBoard <https://digilent.com/shop/zedboard-zynq-7000-arm-fpga-soc-development-board>`__ on FMC slot
 
 Block design
 -------------------------------------------------------------------------------
 
 .. warning::
+
     The VADJ for the Zedboard must be set to 2.5V.
 
 Block diagram
@@ -47,7 +47,7 @@ Block diagram
 
 The data path and clock domains are depicted in the below diagram:
 
-.. image:: ../cn0577/cn0577_zed_block_diagram.svg
+.. image:: cn0577_zed_block_diagram.svg
    :width: 800
    :align: center
    :alt: CN0577/ZedBoard block diagram

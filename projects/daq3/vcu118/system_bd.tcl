@@ -1,17 +1,18 @@
 ###############################################################################
-## Copyright (C) 2019-2023 Analog Devices, Inc. All rights reserved.
+## Copyright (C) 2019-2023, 2025 Analog Devices, Inc. All rights reserved.
 ### SPDX short identifier: ADIBSD
 ###############################################################################
 
-## FIFO depth is 4Mb - 250k samples
-set adc_fifo_address_width 16
+## Offload attributes
+set adc_offload_type 0                   ; ## BRAM
+set adc_offload_size [expr 1*1024*1024]  ; ## 1 MB
 
-## FIFO depth is 4Mb - 250k samples
-set dac_fifo_address_width 15
+set dac_offload_type 0                   ; ## BRAM
+set dac_offload_size [expr 1*1024*1024]  ; ## 1 MB
+
+set plddr_offload_axi_data_width 0
 
 source $ad_hdl_dir/projects/common/vcu118/vcu118_system_bd.tcl
-source $ad_hdl_dir/projects/common/xilinx/adcfifo_bd.tcl
-source $ad_hdl_dir/projects/common/xilinx/dacfifo_bd.tcl
 source ../common/daq3_bd.tcl
 source $ad_hdl_dir/projects/scripts/adi_pd.tcl
 
@@ -26,26 +27,12 @@ S=$ad_project_params(RX_JESD_S)\
 TX:M=$ad_project_params(TX_JESD_M)\
 L=$ad_project_params(TX_JESD_L)\
 S=$ad_project_params(TX_JESD_S)\
-ADC_FIFO_ADDR_WIDTH=$adc_fifo_address_width\
-DAC_FIFO_ADDR_WIDTH=$dac_fifo_address_width"
+ADC_OFFLOAD:TYPE=$adc_offload_type\
+SIZE=$adc_offload_size\
+DAC_OFFLOAD:TYPE=$dac_offload_type\
+SIZE=$dac_offload_size"
 
 sysid_gen_sys_init_file $sys_cstring
-
-ad_ip_parameter util_daq3_xcvr CONFIG.QPLL_FBDIV 20
-ad_ip_parameter util_daq3_xcvr CONFIG.QPLL_REFCLK_DIV 1
-ad_ip_parameter util_daq3_xcvr CONFIG.QPLL_CFG0 0x331C
-ad_ip_parameter util_daq3_xcvr CONFIG.QPLL_CFG1 0xD038
-ad_ip_parameter util_daq3_xcvr CONFIG.QPLL_CFG2 0xFC1
-ad_ip_parameter util_daq3_xcvr CONFIG.QPLL_CFG3 0x120
-ad_ip_parameter util_daq3_xcvr CONFIG.QPLL_CFG4 0x2
-ad_ip_parameter util_daq3_xcvr CONFIG.QPLL_CFG1_G3 0xD038
-ad_ip_parameter util_daq3_xcvr CONFIG.QPLL_CFG2_G3 0xFC1
-
-ad_ip_parameter util_daq3_xcvr CONFIG.CPLL_CFG0 0x3fe
-ad_ip_parameter util_daq3_xcvr CONFIG.CPLL_CFG1 0x29
-ad_ip_parameter util_daq3_xcvr CONFIG.CPLL_CFG2 0x203
-ad_ip_parameter util_daq3_xcvr CONFIG.RX_CLK25_DIV 25
-ad_ip_parameter util_daq3_xcvr CONFIG.TX_CLK25_DIV 25
 
 ad_ip_parameter axi_ad9680_dma CONFIG.AXI_SLICE_DEST true
 ad_ip_parameter axi_ad9680_dma CONFIG.AXI_SLICE_SRC true

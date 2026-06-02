@@ -1,5 +1,5 @@
 ###############################################################################
-## Copyright (C) 2018-2024 Analog Devices, Inc. All rights reserved.
+## Copyright (C) 2018-2025, 2026 Analog Devices, Inc. All rights reserved.
 ### SPDX short identifier: ADIBSD
 ###############################################################################
 
@@ -10,6 +10,7 @@ source ../../scripts/adi_ip_intel.tcl
 ad_ip_create util_cpack2 {Channel Pack Utility v2} util_cpack_elab
 ad_ip_files util_cpack2_impl [list \
   $ad_hdl_dir/library/common/ad_perfect_shuffle.v \
+  $ad_hdl_dir/library/common/util_pipeline_stage.v \
   ../util_pack_common/pack_ctrl.v \
   ../util_pack_common/pack_interconnect.v \
   ../util_pack_common/pack_network.v \
@@ -29,6 +30,16 @@ ad_ip_parameter SAMPLES_PER_CHANNEL INTEGER 1 true [list \
 
 ad_ip_parameter SAMPLE_DATA_WIDTH INTEGER 16 true [list \
   DISPLAY_NAME "Sample Data Width"
+]
+
+ad_ip_parameter PARALLEL_OR_SERIAL_N INTEGER 0 true [list \
+  DISPLAY_NAME "Parallel prefix sum calculation" \
+  ALLOWED_RANGES {"0:Serial" "1:Parallel"} \
+]
+
+ad_ip_parameter PIPELINE_STAGES INTEGER 0 true [list \
+  DISPLAY_NAME "Configure pipeline stages" \
+  ALLOWED_RANGES {"0:No Pipeline" "1:Pipeline every 2 stages" "2:Pipeline every stage"} \
 ]
 
 # defaults
@@ -68,4 +79,3 @@ proc util_cpack_elab {} {
     set_interface_property adc_ch_$n associatedReset ""
   }
 }
-

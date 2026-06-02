@@ -76,10 +76,6 @@ The data path and clock domains are depicted in the below diagram:
         - IP name
         - Documentation
         - Additional info
-      * - AXI_ADCFIFO
-        - :git-hdl:`axi_adcfifo <library/xilinx/axi_adcfifo>`
-        - ---
-        - ---
       * - AXI_ADXCVR
         - :git-hdl:`axi_adxcvr <library/xilinx/axi_adxcvr>`
         - :ref:`axi_adxcvr`
@@ -87,6 +83,10 @@ The data path and clock domains are depicted in the below diagram:
       * - AXI_DMAC
         - :git-hdl:`axi_dmac <library/axi_dmac>`
         - :ref:`axi_dmac`
+        - 2 instances, one for Rx and one for Tx
+      * - DATA_OFFLOAD
+        - :git-hdl:`data_offload <library/data_offload>`
+        - :ref:`data_offload`
         - 2 instances, one for Rx and one for Tx
       * - RX JESD LINK
         - axi_ad9625_jesd
@@ -104,10 +104,6 @@ The data path and clock domains are depicted in the below diagram:
         - axi_ad9162_core
         - :ref:`ad_ip_jesd204_tpl_dac`
         - Instantiated by ``adi_tpl_jesd204_tx_create`` procedure
-      * - UTIL_DACFIFO
-        - :git-hdl:`util_dacfifo <library/util_dacfifo>`
-        - ---
-        - ---
       * - UTIL_UPACK
         - :git-hdl:`util_upack2 <library/util_pack/util_upack2>`
         - :ref:`util_upack2`
@@ -190,13 +186,15 @@ The current HDL project supports only the following configuration:
    system will work only if you do a hardware rework: solder a wire between
    TP19 and C89.
 
+.. _fmcomms11 detailed-description:
+
 Detailed description
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The design has one JESD204B receive chain and one transmit chain, each with
 8 lanes.
 
-Each chain consists of a transport layer represented by a JESD TPL module, 
+Each chain consists of a transport layer represented by a JESD TPL module,
 a link layer represented by a JESD LINK module, and a shared among chains
 physical layer, represented by an XCVR module. The HDL project in its current
 state, has **the link operating in subclass 0**.
@@ -206,13 +204,133 @@ state, has **the link operating in subclass 0**.
 - JESD204B Rx Lane Rate - 4.9152 Gbps
 - JESD204B Tx Lane Rate - 9.8304 Gbps
 
-The transport layer transfers data continuously from/to the ADC/DAC. In the TX
-data path, :ref:`UPACK <util_upack2>` will only send the enabled channels to
-the DMA which in turn will transfer it to the system memory. Depending on
-system specifics, :ref:`data offload FIFOs <data_offload>` may be inserted
-between :ref:`UPACK <util_upack2>`/:ref:`CPACK <util_cpack2>` and the DMA.
-When a FIFO is used, the DMA connection to the DDR can run at a lower speed,
-as data capture cannot be done continuously.
+.. collapsible:: Project flow
+
+   The entry point for project creation is *system_project.tcl*. Some support
+   scripts are first loaded, then the project is created. Based on the suffix of
+   the project, the carrier board is automatically detected. The constraint files
+   and custom modules instantiated directly in the *system_top* module must be added
+   to the project files list.
+
+   These will be explained further on an example, :adi:`FMCOMMS11 <AD-FMCOMMS11-EBZ>`
+   on :xilinx:`ZC706` FPGA carrier.
+
+   .. code-block::
+
+      source ../../scripts/adi_env.tcl
+      source $ad_hdl_dir/projects/scripts/adi_project.tcl
+      source $ad_hdl_dir/projects/scripts/adi_board.tcl
+
+      adi_project_xilinx fmcomms11_zc706
+      adi_project_files fmcomms11_zc706 [list \
+        "../common/fmcomms11_spi.v" \
+        "system_top.v" \
+        "system_constr.xdc"\
+        "$ad_hdl_dir/library/xilinx/common/ad_iobuf.v" \
+        "$ad_hdl_dir/projects/common/zc706/zc706_plddr3_constr.xdc" \
+        "$ad_hdl_dir/projects/common/zc706/zc706_system_constr.xdc" ]
+
+      adi_project_run fmcomms11_zc706
+
+   When the project is created, *system_bd.tcl* is sourced. *system_bd.tcl* will
+   generate the IP Integrator system. The resulting system will be instantiated
+   in the *system_top* module.
+
+   The first step is to instantiate the ZC706 base design:
+
+   .. code-block::
+
+      source $ad_hdl_dir/projects/common/zc706/zc706_system_bd.tcl
+
+   To use the PL DDR3 Data Offload FIFO, the corresponding Tcl file must be sourced:
+
+   .. code-block::
+
+      source $ad_hdl_dir/projects/common/zc706/zc706_plddr3_data_offload_bd.tcl
+
+   The following parameters will define the Data Offload's type, size and the
+   width of the PL DDR Offload. Note, if the FIFO is using the PL side DDR
+   interface, the address width parameter can be ignored, and the FIFO will
+   have an equal depth with the DDR memory. (e.g. in case of the
+   :xilinx:`ZC706` board is 1Gbyte).
+
+   .. code-block::
+
+      ## Offload attributes
+      set adc_offload_type 1                      ; ## PL_DDR
+      set adc_offload_size [expr 1024*1024*1024]  ; ## 1 GB
+
+      set dac_offload_type 0                   ; ## BRAM
+      set dac_offload_size [expr 1*1024*1024]  ; ## 1 MB
+
+      set plddr_offload_axi_data_width 512
+
+   Then the ADC Data Offload instance will be created using the procedure
+   ``ad_plddr_data_offload_create``.
+   The next step is to source the :adi:`FMCOMMS11 <AD-FMCOMMS11-EBZ>` specific
+   design as well as the common support script:
+
+   .. code-block::
+
+      source ../common/fmcomms11_bd.tcl
+      source $ad_hdl_dir/projects/scripts/adi_pd.tcl
+
+   When using the JESD204 Framework, we need to source the
+   :git-hdl:`JESD204 support script <library/jesd204/scripts/jesd204.tcl>`.
+   In this script, several procedures which simplify the design are defined:
+   :code:`source $ad_hdl_dir/library/jesd204/scripts/jesd204.tcl`
+
+   The main JESD204 configuration parameters are defined. These parameters are
+   essential and need to respect the device side configuration in order to have
+   a successful link bring up. For this, the data sheet of the devices needs to be
+   checked.
+
+   .. code-block::
+
+      # JESD204 TX parameters
+      set TX_NUM_OF_LANES 8      ; # L
+      set TX_NUM_OF_CONVERTERS 2 ; # M
+      set TX_SAMPLES_PER_FRAME 2 ; # S
+      set TX_SAMPLE_WIDTH 16     ; # N/NP
+
+      set TX_SAMPLES_PER_CHANNEL [expr [expr $TX_NUM_OF_LANES * 32 ] / \
+                                       [expr $TX_NUM_OF_CONVERTERS * $TX_SAMPLE_WIDTH]] ; # L * 32 / (M * N)
+
+      # JESD204 RX parameters
+      set RX_NUM_OF_LANES 8      ; # L
+      set RX_NUM_OF_CONVERTERS 1 ; # M
+      set RX_SAMPLES_PER_FRAME 4 ; # S
+      set RX_SAMPLE_WIDTH 16     ; # N/NP
+
+   For a complete system, we use additional modules to transfer data.
+   The transport layer transfers data continuously from/to the ADC/DAC. In the TX
+   data path, :ref:`UPACK <util_upack2>` will only send the enabled channels to
+   the transport layer.
+
+   :ref:`Data offload FIFOs <data_offload>` are inserted between the transport layers
+   and the DMAs to handle the devices' higher data rate in the newer version of
+   the project, replacing the obsolete :git-hdl:`util_dacfifo <library/util_dacfifo>`
+   /:git-hdl:`util_adcfifo <library/util_adcfifo>`.
+
+   ADC Data Offload characteristics:
+
+   - Type: PL DDR
+   - Size: 1GB
+
+   DAC Data Offload characteristics:
+
+   - Type: BRAM
+   - Size: 1MB
+
+   But before instantiating them, first we need to source the script that contains
+   the procedures used on the Data Offload instances:
+
+   .. code-block:: tcl
+
+      source $ad_hdl_dir/projects/common/xilinx/data_offload_bd.tcl
+
+   When a FIFO is used, the DMA connection to the DDR can run at a lower speed,
+   as data capture cannot be done continuously.
 
 .. collapsible:: JESD204 Physical layer
 
@@ -334,18 +452,20 @@ CPU/Memory interconnects addresses
 The addresses are dependent on the architecture of the FPGA, having an offset
 added to the base address from HDL (see more at :ref:`architecture cpu-intercon-addr`).
 
-================ ===============
-Instance         Zynq/Microblaze
-================ ===============
-axi_ad9162_xcvr  0x44A6_0000
-axi_ad9162_core  0x44A0_0000
-axi_ad9162_jesd  0x44A9_0000
-axi_ad9162_dma   0x7C42_0000
-axi_ad9625_xcvr  0x44A5_0000
-axi_ad9625_core  0x44A1_0000
-axi_ad9625_jesd  0x44AA_0000
-axi_ad9625_dma   0x7C40_0000
-================ ===============
+===================  ===============
+Instance             Zynq/Microblaze
+===================  ===============
+axi_ad9162_xcvr      0x44A6_0000
+axi_ad9162_core      0x44A0_0000
+axi_ad9162_jesd      0x44A9_0000
+axi_ad9162_dma       0x7C42_0000
+ad9162_data_offload  0x7C43_0000
+axi_ad9625_xcvr      0x44A5_0000
+axi_ad9625_core      0x44A1_0000
+axi_ad9625_jesd      0x44AA_0000
+axi_ad9625_dma       0x7C40_0000
+ad9625_data_offload  0x7C41_0000
+===================  ===============
 
 SPI connections
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -457,34 +577,6 @@ the HDL repository.
 
 A more comprehensive build guide can be found in the :ref:`build_hdl` user guide.
 
-Software considerations
--------------------------------------------------------------------------------
-
-Given that the IP uses the same QUAD as the DAC, performing channel
-reconfiguration may affect the DAC and vice versa. When using the JESD204B
-framework, this is taken into consideration by software.
-
-To relax the constraints for PCB design, the **n**-th physical lane it's
-not connected to the **n**-th logical lane, therefore there is a remapping
-scheme between the physical and link layer to reorder the data streams.
-In this case, both ADC and DAC sides are using the same remapping scheme.
-
-With the following remapping scheme: {0 1 2 3 7 4 6 5},
-where the **n**-th logical lane is mapped to the **list[n]** physical lane.
-
-======== ========================
-Phy Lane FPGA lane / Logical Lane
-======== ========================
-0        0
-1        1
-2        2
-3        3
-4        5
-5        7
-6        6
-7        4
-======== ========================
-
 Resources
 -------------------------------------------------------------------------------
 
@@ -538,12 +630,9 @@ HDL related
    * - UTIL_UPACK2
      - :git-hdl:`library/util_pack/util_upack2`
      - :ref:`util_upack2`
-   * - UTIL_DACFIFO
-     - :git-hdl:`library/util_dacfifo`
-     - ---
-   * - AXI_ADCFIFO
-     - :git-hdl:`library/xilinx/axi_adcfifo`
-     - ---
+   * - DATA_OFFLOAD
+     - :git-hdl:`library/data_offload`
+     - :ref:`data_offload`
    * - UTIL_ADXCVR
      - :git-hdl:`library/xilinx/util_adxcvr`
      - :ref:`util_adxcvr`

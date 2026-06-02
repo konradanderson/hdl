@@ -49,6 +49,7 @@ module ad_ip_jesd204_tpl_dac #(
   parameter DMA_BITS_PER_SAMPLE = 16,
   parameter PADDING_TO_MSB_LSB_N = 0,
   parameter OCTETS_PER_BEAT = 4,
+  parameter DUAL_DDS_DISABLE = 0,
   parameter DDS_TYPE = 1,
   parameter DDS_CORDIC_DW = 16,
   parameter DDS_CORDIC_PHASE_DW = 16,
@@ -56,7 +57,8 @@ module ad_ip_jesd204_tpl_dac #(
   parameter DATAPATH_DISABLE = 0,
   parameter IQCORRECTION_DISABLE = 1,
   parameter EXT_SYNC = 0,
-  parameter XBAR_ENABLE = 0
+  parameter XBAR_ENABLE = 0,
+  parameter PNGEN_ENABLE = 1
 ) (
 
   // jesd interface
@@ -233,10 +235,12 @@ module ad_ip_jesd204_tpl_dac #(
     .OCTETS_PER_BEAT (OCTETS_PER_BEAT),
     .DATA_PATH_WIDTH (DATA_PATH_WIDTH),
     .LINK_DATA_WIDTH (LINK_DATA_WIDTH),
+    .DUAL_DDS_DISABLE (DUAL_DDS_DISABLE),
     .DDS_TYPE (DDS_TYPE),
     .DDS_CORDIC_DW (DDS_CORDIC_DW),
     .DDS_CORDIC_PHASE_DW (DDS_CORDIC_PHASE_DW),
     .DDS_PHASE_DW (DDS_PHASE_DW),
+    .PNGEN_ENABLE (PNGEN_ENABLE),
     .EXT_SYNC (EXT_SYNC)
   ) i_core (
     .clk (link_clk),

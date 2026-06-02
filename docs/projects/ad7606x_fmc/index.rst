@@ -63,7 +63,7 @@ Supported devices
 Supported carriers
 -------------------------------------------------------------------------------
 
-- :xilinx:`ZedBoard <products/boards-and-kits/1-8dyf-11.html>` on FMC slot
+- `ZedBoard <https://digilent.com/shop/zedboard-zynq-7000-arm-fpga-soc-development-board>`__ on FMC slot
 
 Block design
 -------------------------------------------------------------------------------
@@ -289,7 +289,6 @@ spi_ad7606 **   12  56         88
 .. admonition:: Legend
    :class: note
 
-   - ``*`` instantiated only for INTF=0 (parallel interface)
    - ``**`` instantiated only for INTF=1 (serial interface)
 
 Building the HDL project

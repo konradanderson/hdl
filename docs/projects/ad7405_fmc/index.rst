@@ -40,14 +40,14 @@ Supported carriers
    * - Evaluation board
      - Carrier
      - FMC slot
-   * - :adi:`EVAL-AD7405 <EVAL-AD7405>`
-     - :xilinx:`ZedBoard <products/boards-and-kits/1-8dyf-11.html>`
+   * - :adi:`EVAL-AD7405`
+     - `ZedBoard <https://digilent.com/shop/zedboard-zynq-7000-arm-fpga-soc-development-board>`__
      - FMC-LPC
-   * - :adi:`EVAL-AD7403 <EVAL-AD7403>`
-     - :xilinx:`ZedBoard <products/boards-and-kits/1-8dyf-11.html>`
+   * - :adi:`EVAL-AD7403`
+     - `ZedBoard <https://digilent.com/shop/zedboard-zynq-7000-arm-fpga-soc-development-board>`__
      - FMC-LPC
-   * - :adi:`EVAL-ADuM7701 <EVAL-ADuM7701>`
-     - :xilinx:`ZedBoard <products/boards-and-kits/1-8dyf-11.html>`
+   * - :adi:`EVAL-ADuM7701`
+     - `ZedBoard <https://digilent.com/shop/zedboard-zynq-7000-arm-fpga-soc-development-board>`__
      - FMC-LPC
 
 Block design

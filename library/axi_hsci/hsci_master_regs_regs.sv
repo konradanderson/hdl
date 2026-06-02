@@ -1,7 +1,7 @@
-///////////////////////////////////////////////////////////////////////////////////////
-// Copyright (c) 2020 Analog Devices, Inc.  All Rights Reserved.  
-// This software is proprietary to Analog Devices, Inc. and its licensors.
-///////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+// Copyright (C) 2025 Analog Devices, Inc. All rights reserved.
+/// SPDX short identifier: ADIBSD
+///////////////////////////////////////////////////////////////////////////////
 
 
 `include "hsci_master_regs_defs.vh"
@@ -10,60 +10,60 @@
 +----------+----------------------------+---------+-----------------------------------------------------------------------+
 |  ADDRESS | REG NAME                   |  BITS   |  BITFIELD                                                             |
 +----------+----------------------------+---------+-----------------------------------------------------------------------+
-| 00000000 | REVISION_ID                |         |                                                                       | 
-|          |                            |  [15:0] | hsci_revision_id                                         (r)          | 
-| 00008001 | HSCI_MASTER_MODE           |         |                                                                       | 
+| 00000000 | REVISION_ID                |         |                                                                       |
+|          |                            |  [15:0] | hsci_revision_id                                         (r)          |
+| 00008001 | HSCI_MASTER_MODE           |         |                                                                       |
 |          |                            |   [1:0] | hsci_xfer_mode                                         (r/w)          |
-|          |                            |     [4] | ver_b__na                                              (r/w)          |  
-| 00008002 | HSCI_MASTER_XFER_NUM       |         |                                                                       | 
-|          |                            |  [15:0] | hsci_xfer_num                                          (r/w)          | 
-| 00008003 | HSCI_MASTER_ADDR_SIZE      |         |                                                                       | 
-|          |                            |   [2:0] | hsci_addr_size                                         (r/w)          | 
-| 00008004 | HSCI_MASTER_BYTE_NUM       |         |                                                                       | 
-|          |                            |  [16:0] | hsci_byte_num                                          (r/w)          | 
-| 00008005 | HSCI_MASTER_TARGET         |         |                                                                       | 
-|          |                            |  [31:0] | spi_target                                             (r/w)          | 
-| 00008006 | HSCI_MASTER_CTRL           |         |                                                                       | 
-|          |                            |   [1:0] | hsci_cmd_sel                                           (r/w)          | 
-|          |                            |   [5:4] | hsci_slave_ahb_tsize                                   (r/w)          | 
-| 00008007 | HSCI_MASTER_BRAM_ADDRESS   |         |                                                                       | 
-|          |                            |  [15:0] | hsci_bram_start_address                                (r/w)          | 
-| 00008008 | HSCI_MASTER_RUN            |         |                                                                       | 
-|          |                            |     [0] | hsci_run                                               (r/w)          | 
-| 00008009 | HSCI_MASTER_STATUS         |         |                                                                       | 
-|          |                            |     [0] | master_done                                              (r) Volatile | 
-|          |                            |     [1] | master_running                                           (r) Volatile | 
-|          |                            |     [2] | master_wr_in_prog                                        (r) Volatile | 
-|          |                            |     [3] | master_rd_in_prog                                        (r) Volatile | 
-|          |                            |     [4] | miso_test_lfsr_acq                                       (r) Volatile | 
-| 0000800a | HSCI_MASTER_LINKUP_CTRL    |         |                                                                       | 
-|          |                            |   [9:0] | hsci_man_linkup_word                                   (r/w)          | 
-|          |                            |    [10] | hsci_man_linkup                                        (r/w)          | 
+|          |                            |     [4] | ver_b__na                                              (r/w)          |
+| 00008002 | HSCI_MASTER_XFER_NUM       |         |                                                                       |
+|          |                            |  [15:0] | hsci_xfer_num                                          (r/w)          |
+| 00008003 | HSCI_MASTER_ADDR_SIZE      |         |                                                                       |
+|          |                            |   [2:0] | hsci_addr_size                                         (r/w)          |
+| 00008004 | HSCI_MASTER_BYTE_NUM       |         |                                                                       |
+|          |                            |  [16:0] | hsci_byte_num                                          (r/w)          |
+| 00008005 | HSCI_MASTER_TARGET         |         |                                                                       |
+|          |                            |  [31:0] | spi_target                                             (r/w)          |
+| 00008006 | HSCI_MASTER_CTRL           |         |                                                                       |
+|          |                            |   [1:0] | hsci_cmd_sel                                           (r/w)          |
+|          |                            |   [5:4] | hsci_slave_ahb_tsize                                   (r/w)          |
+| 00008007 | HSCI_MASTER_BRAM_ADDRESS   |         |                                                                       |
+|          |                            |  [15:0] | hsci_bram_start_address                                (r/w)          |
+| 00008008 | HSCI_MASTER_RUN            |         |                                                                       |
+|          |                            |     [0] | hsci_run                                               (r/w)          |
+| 00008009 | HSCI_MASTER_STATUS         |         |                                                                       |
+|          |                            |     [0] | master_done                                              (r) Volatile |
+|          |                            |     [1] | master_running                                           (r) Volatile |
+|          |                            |     [2] | master_wr_in_prog                                        (r) Volatile |
+|          |                            |     [3] | master_rd_in_prog                                        (r) Volatile |
+|          |                            |     [4] | miso_test_lfsr_acq                                       (r) Volatile |
+| 0000800a | HSCI_MASTER_LINKUP_CTRL    |         |                                                                       |
+|          |                            |   [9:0] | hsci_man_linkup_word                                   (r/w)          |
+|          |                            |    [10] | hsci_man_linkup                                        (r/w)          |
 |          |                            |    [11] | hsci_auto_linkup                                       (r/w)          |
 |          |                            |    [12] | mosi_clk_inv                                           (r/w)          |
 |          |                            |    [13] | miso_clk_inv                                           (r/w)          |
-| 0000800b | HSCI_MASTER_TEST_CTRL      |         |                                                                       | 
-|          |                            |     [0] | hsci_mosi_test_mode                                    (r/w)          | 
-|          |                            |     [1] | hsci_miso_test_mode                                    (r/w)          | 
-|          |                            |     [2] | hsci_capture_mode                                      (r/w)          | 
-| 0000800c | HSCI_MASTER_LINKUP_STATUS  |         |                                                                       | 
-|          |                            |     [0] | link_active                                              (r) Volatile | 
-|          |                            |   [7:4] | alink_txclk_adj                                          (r) Volatile | 
+| 0000800b | HSCI_MASTER_TEST_CTRL      |         |                                                                       |
+|          |                            |     [0] | hsci_mosi_test_mode                                    (r/w)          |
+|          |                            |     [1] | hsci_miso_test_mode                                    (r/w)          |
+|          |                            |     [2] | hsci_capture_mode                                      (r/w)          |
+| 0000800c | HSCI_MASTER_LINKUP_STATUS  |         |                                                                       |
+|          |                            |     [0] | link_active                                              (r) Volatile |
+|          |                            |   [7:4] | alink_txclk_adj                                          (r) Volatile |
 |          |                            |     [8] | alink_txclk_inv                                          (r) Volatile |
-|          |                            |    [10] | txclk_adj_mismatch                                       (r) Volatile | 
-|          |                            |    [11] | txclk_inv_mismatch                                       (r) Volatile | 
-| 0000800d | HSCI_MASTER_LINKUP_STATUS2 |         |                                                                       | 
-|          |                            |  [15:0] | alink_table                                              (r) Volatile | 
-|          |                            | [19:16] | alink_fsm                                                (r) Volatile | 
-| 0000800e | HSCI_DEBUG_STATUS          |         |                                                                       | 
-|          |                            |   [3:0] | enc_fsm                                                  (r) Volatile | 
-|          |                            |   [6:4] | dec_fsm                                                  (r) Volatile | 
-|          |                            |  [17:8] | capture_word                                             (r) Volatile | 
-|          |                            |    [18] | parity_error                                             (r) Volatile | 
-|          |                            |    [19] | unkown_instruction_error                                 (r) Volatile | 
-|          |                            | [27:20] | slave_error_code                                         (r) Volatile | 
-| 0000800f | MISO_TEST_BER              |         |                                                                       | 
-|          |                            |  [31:0] | miso_test_ber                                            (r) Volatile | 
+|          |                            |    [10] | txclk_adj_mismatch                                       (r) Volatile |
+|          |                            |    [11] | txclk_inv_mismatch                                       (r) Volatile |
+| 0000800d | HSCI_MASTER_LINKUP_STATUS2 |         |                                                                       |
+|          |                            |  [15:0] | alink_table                                              (r) Volatile |
+|          |                            | [19:16] | alink_fsm                                                (r) Volatile |
+| 0000800e | HSCI_DEBUG_STATUS          |         |                                                                       |
+|          |                            |   [3:0] | enc_fsm                                                  (r) Volatile |
+|          |                            |   [6:4] | dec_fsm                                                  (r) Volatile |
+|          |                            |  [17:8] | capture_word                                             (r) Volatile |
+|          |                            |    [18] | parity_error                                             (r) Volatile |
+|          |                            |    [19] | unkown_instruction_error                                 (r) Volatile |
+|          |                            | [27:20] | slave_error_code                                         (r) Volatile |
+| 0000800f | MISO_TEST_BER              |         |                                                                       |
+|          |                            |  [31:0] | miso_test_ber                                            (r) Volatile |
 | 00008010 | HSCI_MASTER_LINK_ERR_INFO  |         |                                                                       |
 |          |                            |  [30:0] | hsci_link_err_info                                       (r) Volatile |
 | 00008011 | HSCI_RATE_CTRL             |         |                                                                       |
@@ -97,7 +97,7 @@ module hsci_master_regs_regs(
   output hsci_master_regs_pkg::hsci_master_regs_regs_t O
 );
 
-import hsci_master_regs_pkg::*;
+  import hsci_master_regs_pkg::*;
 
   wire wr_HSCI_MASTER_REGS_HSCI_MASTER_MODE;
   wire wr_HSCI_MASTER_REGS_HSCI_MASTER_XFER_NUM;
@@ -125,136 +125,136 @@ import hsci_master_regs_pkg::*;
   assign wr_HSCI_MASTER_REGS_HSCI_RATE_CTRL                 = ((I_wr_stb==1'b1) && (I_wr_addr==16'h8011));
   assign wr_HSCI_MASTER_REGS_HSCI_MASTER_RST                = ((I_wr_stb==1'b1) && (I_wr_addr==16'h8012));
   assign wr_HSCI_MASTER_REGS_HSCI_MASTER_SCRATCH            = ((I_wr_stb==1'b1) && (I_wr_addr==16'h801f));
-  
-  // BitField: hsci_revision_id (r) 
+
+  // BitField: hsci_revision_id (r)
   assign O.hsci_revision_id.data = 16'h1;
-  
-  // BitField: hsci_xfer_mode (r/w) 
+
+  // BitField: hsci_xfer_mode (r/w)
   always_ff @( posedge clk) begin
     if(!srstn) begin
       O.hsci_xfer_mode.data <= 2'h0;
     end else if(wr_HSCI_MASTER_REGS_HSCI_MASTER_MODE) begin
-      O.hsci_xfer_mode.data <= I_wr_data[1:0];                           
+      O.hsci_xfer_mode.data <= I_wr_data[1:0];
     end
   end
 
-  // BitField: ver_b__na (r/w) 
+  // BitField: ver_b__na (r/w)
   always_ff @( posedge clk) begin
     if(!srstn) begin
       O.ver_b__na.data <= 1'h1;
     end else if(wr_HSCI_MASTER_REGS_HSCI_MASTER_MODE) begin
-      O.ver_b__na.data <= I_wr_data[4];                             
+      O.ver_b__na.data <= I_wr_data[4];
     end
   end
 
-  // BitField: hsci_xfer_num (r/w) 
+  // BitField: hsci_xfer_num (r/w)
   always_ff @( posedge clk) begin
     if(!srstn) begin
       O.hsci_xfer_num.data <= 16'h0;
     end else if(wr_HSCI_MASTER_REGS_HSCI_MASTER_XFER_NUM) begin
-      O.hsci_xfer_num.data <= I_wr_data[15:0];                          
+      O.hsci_xfer_num.data <= I_wr_data[15:0];
     end
   end
-  
-  // BitField: hsci_addr_size (r/w) 
+
+  // BitField: hsci_addr_size (r/w)
   always_ff @( posedge clk) begin
     if(!srstn) begin
       O.hsci_addr_size.data <= 3'h0;
     end else if(wr_HSCI_MASTER_REGS_HSCI_MASTER_ADDR_SIZE) begin
-      O.hsci_addr_size.data <= I_wr_data[2:0];                           
+      O.hsci_addr_size.data <= I_wr_data[2:0];
     end
   end
-  
-  // BitField: hsci_byte_num (r/w) 
+
+  // BitField: hsci_byte_num (r/w)
   always_ff @( posedge clk) begin
     if(!srstn) begin
       O.hsci_byte_num.data <= 17'h0;
     end else if(wr_HSCI_MASTER_REGS_HSCI_MASTER_BYTE_NUM) begin
-      O.hsci_byte_num.data <= I_wr_data[16:0];                          
+      O.hsci_byte_num.data <= I_wr_data[16:0];
     end
   end
-  
-  // BitField: spi_target (r/w) 
+
+  // BitField: spi_target (r/w)
   always_ff @( posedge clk) begin
     if(!srstn) begin
       O.spi_target.data <= 32'h0;
     end else if(wr_HSCI_MASTER_REGS_HSCI_MASTER_TARGET) begin
-      O.spi_target.data <= I_wr_data[31:0];                          
+      O.spi_target.data <= I_wr_data[31:0];
     end
   end
-  
-  // BitField: hsci_cmd_sel (r/w) 
+
+  // BitField: hsci_cmd_sel (r/w)
   always_ff @( posedge clk) begin
     if(!srstn) begin
       O.hsci_cmd_sel.data <= 2'h0;
     end else if(wr_HSCI_MASTER_REGS_HSCI_MASTER_CTRL) begin
-      O.hsci_cmd_sel.data <= I_wr_data[1:0];                           
+      O.hsci_cmd_sel.data <= I_wr_data[1:0];
     end
   end
-  
-  // BitField: hsci_slave_ahb_tsize (r/w) 
+
+  // BitField: hsci_slave_ahb_tsize (r/w)
   always_ff @( posedge clk) begin
     if(!srstn) begin
       O.hsci_slave_ahb_tsize.data <= 2'h0;
     end else if(wr_HSCI_MASTER_REGS_HSCI_MASTER_CTRL) begin
-      O.hsci_slave_ahb_tsize.data <= I_wr_data[5:4];                           
+      O.hsci_slave_ahb_tsize.data <= I_wr_data[5:4];
     end
   end
-  
-  // BitField: hsci_bram_start_address (r/w) 
+
+  // BitField: hsci_bram_start_address (r/w)
   always_ff @( posedge clk) begin
     if(!srstn) begin
       O.hsci_bram_start_address.data <= 16'h0;
     end else if(wr_HSCI_MASTER_REGS_HSCI_MASTER_BRAM_ADDRESS) begin
-      O.hsci_bram_start_address.data <= I_wr_data[15:0];                          
+      O.hsci_bram_start_address.data <= I_wr_data[15:0];
     end
   end
-  
-  // BitField: hsci_run (r/w) 
+
+  // BitField: hsci_run (r/w)
   always_ff @( posedge clk) begin
     if(!srstn) begin
       O.hsci_run.data <= 1'h0;
     end else if(I.hsci_run.sclr) begin
       O.hsci_run.data <= 1'h0;
     end else if(wr_HSCI_MASTER_REGS_HSCI_MASTER_RUN) begin
-      O.hsci_run.data <= I_wr_data[0];                             
+      O.hsci_run.data <= I_wr_data[0];
     end
   end
-  
-  // BitField: master_done (r)   Volatile 
-  
-  // BitField: master_running (r)   Volatile 
-  
-  // BitField: master_wr_in_prog (r)   Volatile 
-  
-  // BitField: master_rd_in_prog (r)   Volatile 
-  
-  // BitField: miso_test_lfsr_acq (r)   Volatile 
-  
-  // BitField: hsci_man_linkup_word (r/w) 
+
+  // BitField: master_done (r)   Volatile
+
+  // BitField: master_running (r)   Volatile
+
+  // BitField: master_wr_in_prog (r)   Volatile
+
+  // BitField: master_rd_in_prog (r)   Volatile
+
+  // BitField: miso_test_lfsr_acq (r)   Volatile
+
+  // BitField: hsci_man_linkup_word (r/w)
   always_ff @( posedge clk) begin
     if(!srstn) begin
       O.hsci_man_linkup_word.data <= 10'h0;
     end else if(wr_HSCI_MASTER_REGS_HSCI_MASTER_LINKUP_CTRL) begin
-      O.hsci_man_linkup_word.data <= I_wr_data[9:0];                           
+      O.hsci_man_linkup_word.data <= I_wr_data[9:0];
     end
   end
-  
-  // BitField: hsci_man_linkup (r/w) 
+
+  // BitField: hsci_man_linkup (r/w)
   always_ff @( posedge clk) begin
     if(!srstn) begin
       O.hsci_man_linkup.data <= 1'h0;
     end else if(wr_HSCI_MASTER_REGS_HSCI_MASTER_LINKUP_CTRL) begin
-      O.hsci_man_linkup.data <= I_wr_data[10];                            
+      O.hsci_man_linkup.data <= I_wr_data[10];
     end
   end
-  
-  // BitField: hsci_auto_linkup (r/w) 
+
+  // BitField: hsci_auto_linkup (r/w)
   always_ff @( posedge clk) begin
     if(!srstn) begin
       O.hsci_auto_linkup.data <= 1'h0;
     end else if(wr_HSCI_MASTER_REGS_HSCI_MASTER_LINKUP_CTRL) begin
-      O.hsci_auto_linkup.data <= I_wr_data[11];                            
+      O.hsci_auto_linkup.data <= I_wr_data[11];
     end
   end
 
@@ -263,7 +263,7 @@ import hsci_master_regs_pkg::*;
     if(!srstn) begin
       O.mosi_clk_inv.data <= 1'h0;
     end else if(wr_HSCI_MASTER_REGS_HSCI_MASTER_LINKUP_CTRL) begin
-      O.mosi_clk_inv.data <= I_wr_data[12];                            
+      O.mosi_clk_inv.data <= I_wr_data[12];
     end
   end
 
@@ -272,73 +272,73 @@ import hsci_master_regs_pkg::*;
     if(!srstn) begin
       O.miso_clk_inv.data <= 1'h0;
     end else if(wr_HSCI_MASTER_REGS_HSCI_MASTER_LINKUP_CTRL) begin
-      O.miso_clk_inv.data <= I_wr_data[13];                            
+      O.miso_clk_inv.data <= I_wr_data[13];
     end
   end
 
-  // BitField: hsci_mosi_test_mode (r/w) 
+  // BitField: hsci_mosi_test_mode (r/w)
   always_ff @( posedge clk) begin
     if(!srstn) begin
       O.hsci_mosi_test_mode.data <= 1'h0;
     end else if(wr_HSCI_MASTER_REGS_HSCI_MASTER_TEST_CTRL) begin
-      O.hsci_mosi_test_mode.data <= I_wr_data[0];                             
+      O.hsci_mosi_test_mode.data <= I_wr_data[0];
     end
   end
-  
-  // BitField: hsci_miso_test_mode (r/w) 
+
+  // BitField: hsci_miso_test_mode (r/w)
   always_ff @( posedge clk) begin
     if(!srstn) begin
       O.hsci_miso_test_mode.data <= 1'h0;
     end else if(wr_HSCI_MASTER_REGS_HSCI_MASTER_TEST_CTRL) begin
-      O.hsci_miso_test_mode.data <= I_wr_data[1];                             
+      O.hsci_miso_test_mode.data <= I_wr_data[1];
     end
   end
-  
-  // BitField: hsci_capture_mode (r/w) 
+
+  // BitField: hsci_capture_mode (r/w)
   always_ff @( posedge clk) begin
     if(!srstn) begin
       O.hsci_capture_mode.data <= 1'h0;
     end else if(wr_HSCI_MASTER_REGS_HSCI_MASTER_TEST_CTRL) begin
-      O.hsci_capture_mode.data <= I_wr_data[2];                             
+      O.hsci_capture_mode.data <= I_wr_data[2];
     end
   end
-  
-  // BitField: link_active (r)   Volatile 
-  
-  // BitField: alink_txclk_adj (r)   Volatile 
-  
-  // BitField: alink_txclk_inv (r)   Volatile 
 
-  // BitField: txclk_adj_mismatch (r)   Volatile 
-  
-  // BitField: txclk_inv_mismatch (r)   Volatile 
-  
-  // BitField: alink_table (r)   Volatile 
-  
-  // BitField: alink_fsm (r)   Volatile 
-  
-  // BitField: enc_fsm (r)   Volatile 
-  
-  // BitField: dec_fsm (r)   Volatile 
-  
-  // BitField: capture_word (r)   Volatile 
-  
-  // BitField: parity_error (r)   Volatile 
-  
-  // BitField: unkown_instruction_error (r)   Volatile 
-  
-  // BitField: slave_error_code (r)   Volatile 
-  
-  // BitField: miso_test_ber (r)   Volatile 
+  // BitField: link_active (r)   Volatile
 
-  // BitField: hsci_link_err_info (r)   Volatile 
+  // BitField: alink_txclk_adj (r)   Volatile
 
-  // BitField: scratch_reg (r/w) 
+  // BitField: alink_txclk_inv (r)   Volatile
+
+  // BitField: txclk_adj_mismatch (r)   Volatile
+
+  // BitField: txclk_inv_mismatch (r)   Volatile
+
+  // BitField: alink_table (r)   Volatile
+
+  // BitField: alink_fsm (r)   Volatile
+
+  // BitField: enc_fsm (r)   Volatile
+
+  // BitField: dec_fsm (r)   Volatile
+
+  // BitField: capture_word (r)   Volatile
+
+  // BitField: parity_error (r)   Volatile
+
+  // BitField: unkown_instruction_error (r)   Volatile
+
+  // BitField: slave_error_code (r)   Volatile
+
+  // BitField: miso_test_ber (r)   Volatile
+
+  // BitField: hsci_link_err_info (r)   Volatile
+
+  // BitField: scratch_reg (r/w)
   always_ff @( posedge clk) begin
     if(!srstn) begin
       O.scratch_reg.data <= 32'h0;
     end else if(wr_HSCI_MASTER_REGS_HSCI_MASTER_SCRATCH) begin
-      O.scratch_reg.data <= I_wr_data[31:0];                          
+      O.scratch_reg.data <= I_wr_data[31:0];
     end
   end
 
@@ -465,7 +465,7 @@ import hsci_master_regs_pkg::*;
       16'h8012 : O_read_data = rdata_HSCI_MASTER_REGS_HSCI_MASTER_RST;
       16'h8013 : O_read_data = rdata_HSCI_MASTER_REGS_HSCI_PHY_STATUS;
       16'h801f : O_read_data = rdata_HSCI_MASTER_REGS_HSCI_MASTER_SCRATCH;
-    default : 
+    default :
               O_read_data = 32'h0;
     endcase
   end

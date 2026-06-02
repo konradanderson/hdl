@@ -1,7 +1,7 @@
-///////////////////////////////////////////////////////////////////////////////////////
-// Copyright (c) 2020 Analog Devices, Inc.  All Rights Reserved.  
-// This software is proprietary to Analog Devices, Inc. and its licensors.
-///////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+// Copyright (C) 2025 Analog Devices, Inc. All rights reserved.
+/// SPDX short identifier: ADIBSD
+///////////////////////////////////////////////////////////////////////////////
 
 `ifndef _DEFINE_SV_HSCI_MASTER_REGS
 `define _DEFINE_SV_HSCI_MASTER_REGS
@@ -31,7 +31,7 @@
 //
 
 package hsci_master_regs_pkg;
-  
+
 
   // ==========  Module RegisterMap constants  ==========
   parameter PROP_HSCI_MASTER_REGS_AWIDTH         = 'd16;    // Module Address Width property decimal value.
@@ -81,8 +81,8 @@ package hsci_master_regs_pkg;
   parameter RG_HSCI_MASTER_SCRATCH_RESET         = 32'h00000000;
 
   // ==========  BitFields  ==========
-  
-  // BitField: hsci_revision_id (r) 
+
+  // BitField: hsci_revision_id (r)
   //        bitfield defines
   parameter BF_HSCI_REVISION_ID_RESET             = 16'h1;
   parameter BF_HSCI_REVISION_ID_WIDTH             = 32'd16;
@@ -98,8 +98,8 @@ package hsci_master_regs_pkg;
   typedef struct packed {
     hsci_revision_id_data_t data;
   } hsci_revision_id_reg_t;
-  
-  // BitField: hsci_xfer_mode (r/w) 
+
+  // BitField: hsci_xfer_mode (r/w)
   //        bitfield defines
   parameter BF_HSCI_XFER_MODE_RESET               = 2'h0;
   parameter BF_HSCI_XFER_MODE_WIDTH               = 32'd2;
@@ -115,8 +115,8 @@ package hsci_master_regs_pkg;
   typedef struct packed {
     hsci_xfer_mode_data_t data;
   } hsci_xfer_mode_reg_t;
-  
-  // BitField: ver_b__na (r/w) 
+
+  // BitField: ver_b__na (r/w)
   //        bitfield defines
   parameter BF_VER_B__NA_RESET                    = 1'h1;
   parameter BF_VER_B__NA_WIDTH                    = 32'd1;
@@ -132,8 +132,8 @@ package hsci_master_regs_pkg;
   typedef struct packed {
     ver_b__na_data_t data;
   } ver_b__na_reg_t;
-  
-  // BitField: hsci_xfer_num (r/w) 
+
+  // BitField: hsci_xfer_num (r/w)
   //        bitfield defines
   parameter BF_HSCI_XFER_NUM_RESET                = 16'h0;
   parameter BF_HSCI_XFER_NUM_WIDTH                = 32'd16;
@@ -149,8 +149,8 @@ package hsci_master_regs_pkg;
   typedef struct packed {
     hsci_xfer_num_data_t data;
   } hsci_xfer_num_reg_t;
-  
-  // BitField: hsci_addr_size (r/w) 
+
+  // BitField: hsci_addr_size (r/w)
   //        bitfield defines
   parameter BF_HSCI_ADDR_SIZE_RESET               = 3'h0;
   parameter BF_HSCI_ADDR_SIZE_WIDTH               = 32'd3;
@@ -166,8 +166,8 @@ package hsci_master_regs_pkg;
   typedef struct packed {
     hsci_addr_size_data_t data;
   } hsci_addr_size_reg_t;
-  
-  // BitField: hsci_byte_num (r/w) 
+
+  // BitField: hsci_byte_num (r/w)
   //        bitfield defines
   parameter BF_HSCI_BYTE_NUM_RESET                = 17'h0;
   parameter BF_HSCI_BYTE_NUM_WIDTH                = 32'd17;
@@ -183,8 +183,8 @@ package hsci_master_regs_pkg;
   typedef struct packed {
     hsci_byte_num_data_t data;
   } hsci_byte_num_reg_t;
-  
-  // BitField: spi_target (r/w) 
+
+  // BitField: spi_target (r/w)
   //        bitfield defines
   parameter BF_SPI_TARGET_RESET                   = 32'h0;
   parameter BF_SPI_TARGET_WIDTH                   = 32'd32;
@@ -200,8 +200,8 @@ package hsci_master_regs_pkg;
   typedef struct packed {
     spi_target_data_t data;
   } spi_target_reg_t;
-  
-  // BitField: hsci_cmd_sel (r/w) 
+
+  // BitField: hsci_cmd_sel (r/w)
   //        bitfield defines
   parameter BF_HSCI_CMD_SEL_RESET                 = 2'h0;
   parameter BF_HSCI_CMD_SEL_WIDTH                 = 32'd2;
@@ -217,8 +217,8 @@ package hsci_master_regs_pkg;
   typedef struct packed {
     hsci_cmd_sel_data_t data;
   } hsci_cmd_sel_reg_t;
-  
-  // BitField: hsci_slave_ahb_tsize (r/w) 
+
+  // BitField: hsci_slave_ahb_tsize (r/w)
   //        bitfield defines
   parameter BF_HSCI_SLAVE_AHB_TSIZE_RESET         = 2'h0;
   parameter BF_HSCI_SLAVE_AHB_TSIZE_WIDTH         = 32'd2;
@@ -234,8 +234,8 @@ package hsci_master_regs_pkg;
   typedef struct packed {
     hsci_slave_ahb_tsize_data_t data;
   } hsci_slave_ahb_tsize_reg_t;
-  
-  // BitField: hsci_bram_start_address (r/w) 
+
+  // BitField: hsci_bram_start_address (r/w)
   //        bitfield defines
   parameter BF_HSCI_BRAM_START_ADDRESS_RESET      = 16'h0;
   parameter BF_HSCI_BRAM_START_ADDRESS_WIDTH      = 32'd16;
@@ -251,8 +251,8 @@ package hsci_master_regs_pkg;
   typedef struct packed {
     hsci_bram_start_address_data_t data;
   } hsci_bram_start_address_reg_t;
-  
-  // BitField: hsci_run (r/w) 
+
+  // BitField: hsci_run (r/w)
   //        bitfield defines
   parameter BF_HSCI_RUN_RESET                     = 1'h0;
   parameter BF_HSCI_RUN_WIDTH                     = 32'd1;
@@ -268,12 +268,12 @@ package hsci_master_regs_pkg;
   typedef struct packed {
     hsci_run_data_t data;
   } hsci_run_reg_t;
-  
+
   typedef struct packed {
     logic          sclr;
   } hsci_run_status_t;
-  
-  // BitField: master_done (r)   Volatile 
+
+  // BitField: master_done (r)   Volatile
   //        bitfield defines
   parameter BF_MASTER_DONE_RESET                  = 1'h0;
   parameter BF_MASTER_DONE_WIDTH                  = 32'd1;
@@ -285,12 +285,12 @@ package hsci_master_regs_pkg;
   parameter BF_MASTER_DONE_RMASK                  = 1'h1;
   parameter BF_MASTER_DONE_RWIDTH                 = 32'd1;
   typedef logic  master_done_data_t;
-  
+
   typedef struct packed {
     master_done_data_t data;
   } master_done_status_t;
-  
-  // BitField: master_running (r)   Volatile 
+
+  // BitField: master_running (r)   Volatile
   //        bitfield defines
   parameter BF_MASTER_RUNNING_RESET               = 1'h0;
   parameter BF_MASTER_RUNNING_WIDTH               = 32'd1;
@@ -302,12 +302,12 @@ package hsci_master_regs_pkg;
   parameter BF_MASTER_RUNNING_RMASK               = 2'h2;
   parameter BF_MASTER_RUNNING_RWIDTH              = 32'd1;
   typedef logic  master_running_data_t;
-  
+
   typedef struct packed {
     master_running_data_t data;
   } master_running_status_t;
-  
-  // BitField: master_wr_in_prog (r)   Volatile 
+
+  // BitField: master_wr_in_prog (r)   Volatile
   //        bitfield defines
   parameter BF_MASTER_WR_IN_PROG_RESET            = 1'h0;
   parameter BF_MASTER_WR_IN_PROG_WIDTH            = 32'd1;
@@ -319,12 +319,12 @@ package hsci_master_regs_pkg;
   parameter BF_MASTER_WR_IN_PROG_RMASK            = 3'h4;
   parameter BF_MASTER_WR_IN_PROG_RWIDTH           = 32'd1;
   typedef logic  master_wr_in_prog_data_t;
-  
+
   typedef struct packed {
     master_wr_in_prog_data_t data;
   } master_wr_in_prog_status_t;
-  
-  // BitField: master_rd_in_prog (r)   Volatile 
+
+  // BitField: master_rd_in_prog (r)   Volatile
   //        bitfield defines
   parameter BF_MASTER_RD_IN_PROG_RESET            = 1'h0;
   parameter BF_MASTER_RD_IN_PROG_WIDTH            = 32'd1;
@@ -336,12 +336,12 @@ package hsci_master_regs_pkg;
   parameter BF_MASTER_RD_IN_PROG_RMASK            = 4'h8;
   parameter BF_MASTER_RD_IN_PROG_RWIDTH           = 32'd1;
   typedef logic  master_rd_in_prog_data_t;
-  
+
   typedef struct packed {
     master_rd_in_prog_data_t data;
   } master_rd_in_prog_status_t;
-  
-  // BitField: miso_test_lfsr_acq (r)   Volatile 
+
+  // BitField: miso_test_lfsr_acq (r)   Volatile
   //        bitfield defines
   parameter BF_MISO_TEST_LFSR_ACQ_RESET           = 1'h0;
   parameter BF_MISO_TEST_LFSR_ACQ_WIDTH           = 32'd1;
@@ -353,12 +353,12 @@ package hsci_master_regs_pkg;
   parameter BF_MISO_TEST_LFSR_ACQ_RMASK           = 5'h10;
   parameter BF_MISO_TEST_LFSR_ACQ_RWIDTH          = 32'd1;
   typedef logic  miso_test_lfsr_acq_data_t;
-  
+
   typedef struct packed {
     miso_test_lfsr_acq_data_t data;
   } miso_test_lfsr_acq_status_t;
-  
-  // BitField: hsci_man_linkup_word (r/w) 
+
+  // BitField: hsci_man_linkup_word (r/w)
   //        bitfield defines
   parameter BF_HSCI_MAN_LINKUP_WORD_RESET         = 10'h0;
   parameter BF_HSCI_MAN_LINKUP_WORD_WIDTH         = 32'd10;
@@ -374,8 +374,8 @@ package hsci_master_regs_pkg;
   typedef struct packed {
     hsci_man_linkup_word_data_t data;
   } hsci_man_linkup_word_reg_t;
-  
-  // BitField: hsci_man_linkup (r/w) 
+
+  // BitField: hsci_man_linkup (r/w)
   //        bitfield defines
   parameter BF_HSCI_MAN_LINKUP_RESET              = 1'h0;
   parameter BF_HSCI_MAN_LINKUP_WIDTH              = 32'd1;
@@ -391,8 +391,8 @@ package hsci_master_regs_pkg;
   typedef struct packed {
     hsci_man_linkup_data_t data;
   } hsci_man_linkup_reg_t;
-  
-  // BitField: hsci_auto_linkup (r/w) 
+
+  // BitField: hsci_auto_linkup (r/w)
   //        bitfield defines
   parameter BF_HSCI_AUTO_LINKUP_RESET             = 1'h0;
   parameter BF_HSCI_AUTO_LINKUP_WIDTH             = 32'd1;
@@ -409,7 +409,7 @@ package hsci_master_regs_pkg;
     hsci_auto_linkup_data_t data;
   } hsci_auto_linkup_reg_t;
 
-  // BitField: mosi_clk_inv (r/w) 
+  // BitField: mosi_clk_inv (r/w)
   //        bitfield defines
   parameter BF_MOSI_CLK_INV_RESET                 = 1'h0;
   parameter BF_MOSI_CLK_INV_WIDTH                 = 32'd1;
@@ -426,7 +426,7 @@ package hsci_master_regs_pkg;
     mosi_clk_inv_data_t data;
   } mosi_clk_inv_reg_t;
 
-  // BitField: miso_clk_inv (r/w) 
+  // BitField: miso_clk_inv (r/w)
   //        bitfield defines
   parameter BF_MISO_CLK_INV_RESET                 = 1'h0;
   parameter BF_MISO_CLK_INV_WIDTH                 = 32'd1;
@@ -443,7 +443,7 @@ package hsci_master_regs_pkg;
     miso_clk_inv_data_t data;
   } miso_clk_inv_reg_t;
 
-  // BitField: hsci_mosi_test_mode (r/w) 
+  // BitField: hsci_mosi_test_mode (r/w)
   //        bitfield defines
   parameter BF_HSCI_MOSI_TEST_MODE_RESET          = 1'h0;
   parameter BF_HSCI_MOSI_TEST_MODE_WIDTH          = 32'd1;
@@ -459,8 +459,8 @@ package hsci_master_regs_pkg;
   typedef struct packed {
     hsci_mosi_test_mode_data_t data;
   } hsci_mosi_test_mode_reg_t;
-  
-  // BitField: hsci_miso_test_mode (r/w) 
+
+  // BitField: hsci_miso_test_mode (r/w)
   //        bitfield defines
   parameter BF_HSCI_MISO_TEST_MODE_RESET          = 1'h0;
   parameter BF_HSCI_MISO_TEST_MODE_WIDTH          = 32'd1;
@@ -476,8 +476,8 @@ package hsci_master_regs_pkg;
   typedef struct packed {
     hsci_miso_test_mode_data_t data;
   } hsci_miso_test_mode_reg_t;
-  
-  // BitField: hsci_capture_mode (r/w) 
+
+  // BitField: hsci_capture_mode (r/w)
   //        bitfield defines
   parameter BF_HSCI_CAPTURE_MODE_RESET            = 1'h0;
   parameter BF_HSCI_CAPTURE_MODE_WIDTH            = 32'd1;
@@ -493,8 +493,8 @@ package hsci_master_regs_pkg;
   typedef struct packed {
     hsci_capture_mode_data_t data;
   } hsci_capture_mode_reg_t;
-  
-  // BitField: link_active (r)   Volatile 
+
+  // BitField: link_active (r)   Volatile
   //        bitfield defines
   parameter BF_LINK_ACTIVE_RESET                  = 1'h0;
   parameter BF_LINK_ACTIVE_WIDTH                  = 32'd1;
@@ -506,12 +506,12 @@ package hsci_master_regs_pkg;
   parameter BF_LINK_ACTIVE_RMASK                  = 1'h1;
   parameter BF_LINK_ACTIVE_RWIDTH                 = 32'd1;
   typedef logic  link_active_data_t;
-  
+
   typedef struct packed {
     link_active_data_t data;
   } link_active_status_t;
-  
-  // BitField: alink_txclk_adj (r)   Volatile 
+
+  // BitField: alink_txclk_adj (r)   Volatile
   //        bitfield defines
   parameter BF_ALINK_TXCLK_ADJ_RESET              = 4'h0;
   parameter BF_ALINK_TXCLK_ADJ_WIDTH              = 32'd4;
@@ -523,12 +523,12 @@ package hsci_master_regs_pkg;
   parameter BF_ALINK_TXCLK_ADJ_RMASK              = 8'hf0;
   parameter BF_ALINK_TXCLK_ADJ_RWIDTH             = 32'd4;
   typedef logic [3:0] alink_txclk_adj_data_t;
-  
+
   typedef struct packed {
     alink_txclk_adj_data_t data;
   } alink_txclk_adj_status_t;
-  
-  // BitField: alink_txclk_inv (r)   Volatile 
+
+  // BitField: alink_txclk_inv (r)   Volatile
   //        bitfield defines
   parameter BF_ALINK_TXCLK_INV_RESET              = 1'h0;
   parameter BF_ALINK_TXCLK_INV_WIDTH              = 32'd1;
@@ -540,12 +540,12 @@ package hsci_master_regs_pkg;
   parameter BF_ALINK_TXCLK_INV_RMASK              = 9'h100;
   parameter BF_ALINK_TXCLK_INV_RWIDTH             = 32'd1;
   typedef logic  alink_txclk_inv_data_t;
-  
+
   typedef struct packed {
     alink_txclk_inv_data_t data;
   } alink_txclk_inv_status_t;
-  
-  // BitField: txclk_adj_mismatch (r)   Volatile 
+
+  // BitField: txclk_adj_mismatch (r)   Volatile
   //        bitfield defines
   parameter BF_TXCLK_ADJ_MISMATCH_RESET           = 1'h0;
   parameter BF_TXCLK_ADJ_MISMATCH_WIDTH           = 32'd1;
@@ -557,12 +557,12 @@ package hsci_master_regs_pkg;
   parameter BF_TXCLK_ADJ_MISMATCH_RMASK           = 11'h400;
   parameter BF_TXCLK_ADJ_MISMATCH_RWIDTH          = 32'd1;
   typedef logic  txclk_adj_mismatch_data_t;
-  
+
   typedef struct packed {
     txclk_adj_mismatch_data_t data;
   } txclk_adj_mismatch_status_t;
-  
-  // BitField: txclk_inv_mismatch (r)   Volatile 
+
+  // BitField: txclk_inv_mismatch (r)   Volatile
   //        bitfield defines
   parameter BF_TXCLK_INV_MISMATCH_RESET           = 1'h0;
   parameter BF_TXCLK_INV_MISMATCH_WIDTH           = 32'd1;
@@ -574,12 +574,12 @@ package hsci_master_regs_pkg;
   parameter BF_TXCLK_INV_MISMATCH_RMASK           = 12'h800;
   parameter BF_TXCLK_INV_MISMATCH_RWIDTH          = 32'd1;
   typedef logic  txclk_inv_mismatch_data_t;
-  
+
   typedef struct packed {
     txclk_inv_mismatch_data_t data;
   } txclk_inv_mismatch_status_t;
-  
-  // BitField: alink_table (r)   Volatile 
+
+  // BitField: alink_table (r)   Volatile
   //        bitfield defines
   parameter BF_ALINK_TABLE_RESET                  = 16'h0;
   parameter BF_ALINK_TABLE_WIDTH                  = 32'd16;
@@ -591,12 +591,12 @@ package hsci_master_regs_pkg;
   parameter BF_ALINK_TABLE_RMASK                  = 16'hffff;
   parameter BF_ALINK_TABLE_RWIDTH                 = 32'd16;
   typedef logic [15:0] alink_table_data_t;
-  
+
   typedef struct packed {
     alink_table_data_t data;
   } alink_table_status_t;
-  
-  // BitField: alink_fsm (r)   Volatile 
+
+  // BitField: alink_fsm (r)   Volatile
   //        bitfield defines
   parameter BF_ALINK_FSM_RESET                    = 4'h0;
   parameter BF_ALINK_FSM_WIDTH                    = 32'd4;
@@ -608,12 +608,12 @@ package hsci_master_regs_pkg;
   parameter BF_ALINK_FSM_RMASK                    = 20'hf0000;
   parameter BF_ALINK_FSM_RWIDTH                   = 32'd4;
   typedef logic [3:0] alink_fsm_data_t;
-  
+
   typedef struct packed {
     alink_fsm_data_t data;
   } alink_fsm_status_t;
-  
-  // BitField: enc_fsm (r)   Volatile 
+
+  // BitField: enc_fsm (r)   Volatile
   //        bitfield defines
   parameter BF_ENC_FSM_RESET                      = 4'h0;
   parameter BF_ENC_FSM_WIDTH                      = 32'd4;
@@ -625,12 +625,12 @@ package hsci_master_regs_pkg;
   parameter BF_ENC_FSM_RMASK                      = 4'hf;
   parameter BF_ENC_FSM_RWIDTH                     = 32'd4;
   typedef logic [3:0] enc_fsm_data_t;
-  
+
   typedef struct packed {
     enc_fsm_data_t data;
   } enc_fsm_status_t;
-  
-  // BitField: dec_fsm (r)   Volatile 
+
+  // BitField: dec_fsm (r)   Volatile
   //        bitfield defines
   parameter BF_DEC_FSM_RESET                      = 3'h0;
   parameter BF_DEC_FSM_WIDTH                      = 32'd3;
@@ -642,12 +642,12 @@ package hsci_master_regs_pkg;
   parameter BF_DEC_FSM_RMASK                      = 7'h70;
   parameter BF_DEC_FSM_RWIDTH                     = 32'd3;
   typedef logic [2:0] dec_fsm_data_t;
-  
+
   typedef struct packed {
     dec_fsm_data_t data;
   } dec_fsm_status_t;
-  
-  // BitField: capture_word (r)   Volatile 
+
+  // BitField: capture_word (r)   Volatile
   //        bitfield defines
   parameter BF_CAPTURE_WORD_RESET                 = 10'h0;
   parameter BF_CAPTURE_WORD_WIDTH                 = 32'd10;
@@ -659,12 +659,12 @@ package hsci_master_regs_pkg;
   parameter BF_CAPTURE_WORD_RMASK                 = 18'h3ff00;
   parameter BF_CAPTURE_WORD_RWIDTH                = 32'd10;
   typedef logic [9:0] capture_word_data_t;
-  
+
   typedef struct packed {
     capture_word_data_t data;
   } capture_word_status_t;
-  
-  // BitField: parity_error (r)   Volatile 
+
+  // BitField: parity_error (r)   Volatile
   //        bitfield defines
   parameter BF_PARITY_ERROR_RESET                 = 1'h0;
   parameter BF_PARITY_ERROR_WIDTH                 = 32'd1;
@@ -676,12 +676,12 @@ package hsci_master_regs_pkg;
   parameter BF_PARITY_ERROR_RMASK                 = 19'h40000;
   parameter BF_PARITY_ERROR_RWIDTH                = 32'd1;
   typedef logic  parity_error_data_t;
-  
+
   typedef struct packed {
     parity_error_data_t data;
   } parity_error_status_t;
-  
-  // BitField: unkown_instruction_error (r)   Volatile 
+
+  // BitField: unkown_instruction_error (r)   Volatile
   //        bitfield defines
   parameter BF_UNKOWN_INSTRUCTION_ERROR_RESET     = 1'h0;
   parameter BF_UNKOWN_INSTRUCTION_ERROR_WIDTH     = 32'd1;
@@ -693,12 +693,12 @@ package hsci_master_regs_pkg;
   parameter BF_UNKOWN_INSTRUCTION_ERROR_RMASK     = 20'h80000;
   parameter BF_UNKOWN_INSTRUCTION_ERROR_RWIDTH    = 32'd1;
   typedef logic  unkown_instruction_error_data_t;
-  
+
   typedef struct packed {
     unkown_instruction_error_data_t data;
   } unkown_instruction_error_status_t;
-  
-  // BitField: slave_error_code (r)   Volatile 
+
+  // BitField: slave_error_code (r)   Volatile
   //        bitfield defines
   parameter BF_SLAVE_ERROR_CODE_RESET             = 8'h0;
   parameter BF_SLAVE_ERROR_CODE_WIDTH             = 32'd8;
@@ -710,12 +710,12 @@ package hsci_master_regs_pkg;
   parameter BF_SLAVE_ERROR_CODE_RMASK             = 28'hff00000;
   parameter BF_SLAVE_ERROR_CODE_RWIDTH            = 32'd8;
   typedef logic [7:0] slave_error_code_data_t;
-  
+
   typedef struct packed {
     slave_error_code_data_t data;
   } slave_error_code_status_t;
-  
-  // BitField: miso_test_ber (r)   Volatile 
+
+  // BitField: miso_test_ber (r)   Volatile
   //        bitfield defines
   parameter BF_MISO_TEST_BER_RESET                = 32'h0;
   parameter BF_MISO_TEST_BER_WIDTH                = 32'd32;
@@ -727,12 +727,12 @@ package hsci_master_regs_pkg;
   parameter BF_MISO_TEST_BER_RMASK                = 32'hffffffff;
   parameter BF_MISO_TEST_BER_RWIDTH               = 32'd32;
   typedef logic [31:0] miso_test_ber_data_t;
-  
+
   typedef struct packed {
     miso_test_ber_data_t data;
   } miso_test_ber_status_t;
-  
-  // BitField: hsci_link_err_info (r)   Volatile 
+
+  // BitField: hsci_link_err_info (r)   Volatile
   //        bitfield defines
   parameter BF_HSCI_LINK_ERR_INFO_RESET           = 31'h0;
   parameter BF_HSCI_LINK_ERR_INFO_WIDTH           = 32'd31;
@@ -744,12 +744,12 @@ package hsci_master_regs_pkg;
   parameter BF_HSCI_LINK_ERR_INFO_RMASK           = 31'h7fffffff;
   parameter BF_HSCI_LINK_ERR_INFO_RWIDTH          = 32'd31;
   typedef logic [30:0] hsci_link_err_info_data_t;
-  
+
   typedef struct packed {
     hsci_link_err_info_data_t data;
   } hsci_link_err_info_status_t;
-  
-  // BitField: scratch_reg (r/w) 
+
+  // BitField: scratch_reg (r/w)
   //        bitfield defines
   parameter BF_SCRATCH_REG_RESET                  = 32'h0;
   parameter BF_SCRATCH_REG_WIDTH                  = 32'd32;
@@ -1016,71 +1016,70 @@ package hsci_master_regs_pkg;
 
 
 
-/*----------------------------------------*/ 
-/*  Function for MMR WR Access Validation */ 
-/*----------------------------------------*/ 
- 
-function  automatic MMR_Rd_Valid_HSCI_MASTER_REGS( input  [15:0] adr ); 
-  logic valid; 
-  begin 
-    case( adr ) 
-      16'h0000 : valid = 1'b1; 
-      16'h8001 : valid = 1'b1; 
-      16'h8002 : valid = 1'b1; 
-      16'h8003 : valid = 1'b1; 
-      16'h8004 : valid = 1'b1; 
-      16'h8005 : valid = 1'b1; 
-      16'h8006 : valid = 1'b1; 
-      16'h8007 : valid = 1'b1; 
-      16'h8008 : valid = 1'b1; 
-      16'h8009 : valid = 1'b1; 
-      16'h800a : valid = 1'b1; 
-      16'h800b : valid = 1'b1; 
-      16'h800c : valid = 1'b1; 
-      16'h800d : valid = 1'b1; 
-      16'h800e : valid = 1'b1; 
-      16'h800f : valid = 1'b1; 
+/*----------------------------------------*/
+/*  Function for MMR WR Access Validation */
+/*----------------------------------------*/
+
+function  automatic MMR_Rd_Valid_HSCI_MASTER_REGS( input  [15:0] adr );
+  logic valid;
+  begin
+    case( adr )
+      16'h0000 : valid = 1'b1;
+      16'h8001 : valid = 1'b1;
+      16'h8002 : valid = 1'b1;
+      16'h8003 : valid = 1'b1;
+      16'h8004 : valid = 1'b1;
+      16'h8005 : valid = 1'b1;
+      16'h8006 : valid = 1'b1;
+      16'h8007 : valid = 1'b1;
+      16'h8008 : valid = 1'b1;
+      16'h8009 : valid = 1'b1;
+      16'h800a : valid = 1'b1;
+      16'h800b : valid = 1'b1;
+      16'h800c : valid = 1'b1;
+      16'h800d : valid = 1'b1;
+      16'h800e : valid = 1'b1;
+      16'h800f : valid = 1'b1;
       16'h8010 : valid = 1'b1;
       16'h8011 : valid = 1'b1;
       16'h8012 : valid = 1'b1;
       16'h8013 : valid = 1'b1;
       16'h801f : valid = 1'b1;
-      default    : valid = 1'b0; 
-    endcase 
-    MMR_Rd_Valid_HSCI_MASTER_REGS = valid; 
-  end 
+      default    : valid = 1'b0;
+    endcase
+    MMR_Rd_Valid_HSCI_MASTER_REGS = valid;
+  end
 endfunction /* MMR_Rd_Valid_HSCI_MASTER_REGS */
 
-/*----------------------------------------*/ 
-/*  Function for MMR WR Access Validation */ 
-/*----------------------------------------*/ 
- 
-function automatic MMR_Wr_Valid_HSCI_MASTER_REGS( input  [15:0] adr ); 
-  logic valid; 
-  begin 
-    case( adr ) 
-      16'h8001 : valid = 1'b1; 
-      16'h8002 : valid = 1'b1; 
-      16'h8003 : valid = 1'b1; 
-      16'h8004 : valid = 1'b1; 
-      16'h8005 : valid = 1'b1; 
-      16'h8006 : valid = 1'b1; 
-      16'h8007 : valid = 1'b1; 
-      16'h8008 : valid = 1'b1; 
-      16'h800a : valid = 1'b1; 
-      16'h800b : valid = 1'b1; 
+/*----------------------------------------*/
+/*  Function for MMR WR Access Validation */
+/*----------------------------------------*/
+
+function automatic MMR_Wr_Valid_HSCI_MASTER_REGS( input  [15:0] adr );
+  logic valid;
+  begin
+    case( adr )
+      16'h8001 : valid = 1'b1;
+      16'h8002 : valid = 1'b1;
+      16'h8003 : valid = 1'b1;
+      16'h8004 : valid = 1'b1;
+      16'h8005 : valid = 1'b1;
+      16'h8006 : valid = 1'b1;
+      16'h8007 : valid = 1'b1;
+      16'h8008 : valid = 1'b1;
+      16'h800a : valid = 1'b1;
+      16'h800b : valid = 1'b1;
       16'h8010 : valid = 1'b1;
       16'h8011 : valid = 1'b1;
       16'h8012 : valid = 1'b1;
       16'h8013 : valid = 1'b1;
       16'h801f : valid = 1'b1;
-      default    : valid = 1'b0; 
-    endcase 
-    MMR_Wr_Valid_HSCI_MASTER_REGS = valid; 
-  end 
+      default    : valid = 1'b0;
+    endcase
+    MMR_Wr_Valid_HSCI_MASTER_REGS = valid;
+  end
 endfunction /* MMR_Wr_Valid_HSCI_MASTER_REGS */
 
 endpackage
 
 `endif        // end ifndef _DEFINE_SV_HSCI_MASTER_REGS
-

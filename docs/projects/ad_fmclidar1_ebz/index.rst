@@ -12,7 +12,7 @@ AD-FMCLIDAR1-EBZ HDL project (OBSOLETE)
 Overview
 -------------------------------------------------------------------------------
 
-The :adi:`AD-FMCLIDAR1-EBZ <AD-FMCLIDAR1-EBZ>` is a prototyping platform for
+The :adi:`AD-FMCLIDAR1-EBZ` is a prototyping platform for
 LiDAR applications that can be used on FPGA development boards enabled with FMC
 HPC connector and JESD204B support capability. It offers developers a
 working-out-of-box platform that can be used for developing software and
@@ -24,7 +24,7 @@ Board, and the AFE Receiver Board.
 Supported boards
 -------------------------------------------------------------------------------
 
-- :adi:`AD-FMCLIDAR1-EBZ <AD-FMCLIDAR1-EBZ>`
+- :adi:`AD-FMCLIDAR1-EBZ`
 
 Supported carriers
 -------------------------------------------------------------------------------
@@ -358,9 +358,9 @@ HDL related
 Software related
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-- :git-linux:`AD-FMCLIDAR1-EBZ/A10SoC Linux device tree <hdl_2019_r1:arch/arm/boot/dts/socfpga_arria10_socdk_fmclidar1.dts>`
-- :git-linux:`AD-FMCLIDAR1-EBZ/ZC706 Linux device tree <hdl_2019_r1:arch/arm/boot/dts/zynq-zc706-adv7511-fmclidar1.dts>`
-- :git-linux:`AD-FMCLIDAR1-EBZ/ZCU102 Linux device tree <hdl_2019_r1:arch/arm64/boot/dts/xilinx/zynqmp-zcu102-rev10-fmclidar1.dts>`
+- :git-linux:`AD-FMCLIDAR1-EBZ/A10SoC Linux device tree <2019_R2:arch/arm/boot/dts/socfpga_arria10_socdk_fmclidar1.dts>`
+- :git-linux:`AD-FMCLIDAR1-EBZ/ZC706 Linux device tree <2019_R2:arch/arm/boot/dts/zynq-zc706-adv7511-fmclidar1.dts>`
+- :git-linux:`AD-FMCLIDAR1-EBZ/ZCU102 Linux device tree <2019_R2:arch/arm64/boot/dts/xilinx/zynqmp-zcu102-rev10-fmclidar1.dts>`
 
 .. include:: ../common/more_information.rst
 
